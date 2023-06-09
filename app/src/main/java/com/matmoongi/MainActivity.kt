@@ -1,9 +1,4 @@
 package com.matmoongi
 
-class MainActivity{
-    ;
-    ;
-    ;
-    ;
-    ;
+class MainActivity {
 }
