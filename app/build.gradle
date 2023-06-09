@@ -50,7 +50,7 @@ subprojects {
 
 task runChecksForDanger() {
     group = "Reporting"
-    dependsOn 'ktlintFormat'
+    dependsOn 'ktlintCheck'
 
     def file = file("${project.rootDir}/build/reports/ktlint")
     if (!file.exists()) file.mkdirs()
