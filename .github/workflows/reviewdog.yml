@@ -1,0 +1,19 @@
+name: Review Dog
+run-name: ${{ github.actor }}'s new PR is coming🚀
+on:
+    pull_request:
+    push:
+        branches:
+            - master
+
+jobs:
+    ktlint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Run reviewdog
+              uses: ScaCap/action-ktlint@master
+              with:
+                  github_token: ${{ secrets.github_token }}
+                  reporter: github-pr-review
