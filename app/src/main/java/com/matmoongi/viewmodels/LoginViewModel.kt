@@ -1,4 +1,4 @@
-package com.matmoongi
+package com.matmoongi.viewmodels
 
 import androidx.lifecycle.ViewModel
 
