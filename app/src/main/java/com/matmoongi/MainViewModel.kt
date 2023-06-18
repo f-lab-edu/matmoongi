@@ -6,15 +6,14 @@ class MainViewModel : ViewModel() {
     init {
         searchRestaurants()
     }
+
     private fun searchRestaurants() {}
 
     private fun moreRestaurants() {}
 
-    private fun addToFavorites() {}
+    private fun registerToFavorites() {}
 
-    private fun routeToRestaurant() {}
+    private fun goToMap() {}
 
-    private fun logout() {}
-
-    private fun showTerms() {}
+    private fun goToUserMenu() {}
 }

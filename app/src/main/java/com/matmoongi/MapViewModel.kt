@@ -2,12 +2,13 @@ package com.matmoongi
 
 import androidx.lifecycle.ViewModel
 
-class FavoritesViewModel: ViewModel() {
-    private fun unregister() {}
+class MapViewModel : ViewModel() {
+    private fun registerToFavorites() {}
 
-    private fun goToMap(){}
+    private fun unregisterInFavorites() {}
 
     private fun goBack() {}
 
     private fun goToMain() {}
+
 }
