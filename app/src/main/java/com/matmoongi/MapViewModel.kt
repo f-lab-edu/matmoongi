@@ -10,5 +10,4 @@ class MapViewModel : ViewModel() {
     private fun goBack() {}
 
     private fun goToMain() {}
-
 }

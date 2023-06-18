@@ -13,6 +13,4 @@ class UserViewModel : ViewModel() {
     private fun showTerms() {}
     private fun goToMain() {}
     private fun goBack() {}
-
-
 }
