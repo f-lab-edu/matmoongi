@@ -6,8 +6,4 @@ class MapViewModel : ViewModel() {
     private fun registerToFavorites() {}
 
     private fun unregisterInFavorites() {}
-
-    private fun goBack() {}
-
-    private fun goToMain() {}
 }

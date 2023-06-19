@@ -12,8 +12,4 @@ class MainViewModel : ViewModel() {
     private fun moreRestaurants() {}
 
     private fun registerToFavorites() {}
-
-    private fun goToMap() {}
-
-    private fun goToUserMenu() {}
 }
