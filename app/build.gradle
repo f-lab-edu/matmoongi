@@ -32,6 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    ktlint {
+        version = "0.48.0"
+    }
 }
 
 dependencies {
