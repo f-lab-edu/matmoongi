@@ -5,16 +5,18 @@ import androidx.lifecycle.ViewModel
 import com.matmoongi.data.FavoritesRepository
 import com.matmoongi.data.MainRestaurant
 import com.matmoongi.data.RestaurantsRepository
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MainViewModel(
     private val favoritesRepository: FavoritesRepository,
     private val restaurantsRepository: RestaurantsRepository,
-    private val state: SavedStateHandle
+    private val state: SavedStateHandle,
 ) : ViewModel() {
 
-    private val restaurantsState: StateFlow<List<MainRestaurant>> = state.getStateFlow("restaurantsState", emptyList())
+    private val restaurantsState: StateFlow<List<MainRestaurant>> = state.getStateFlow(
+        "restaurantsState",
+        emptyList(),
+    )
 
     init {
         searchRestaurants()

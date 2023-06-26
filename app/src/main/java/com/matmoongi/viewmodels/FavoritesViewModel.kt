@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 class FavoritesViewModel(
     private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
-    //firebase의 리스트와 동기화 해야하므로 savedStateHandle 사용하지 않음
+    // firebase의 리스트와 동기화 해야하므로 savedStateHandle 사용하지 않음
     private val _favoritesState = MutableStateFlow(toFavoriteRestaurant())
+
     // The UI collects from this StateFlow to get its state updates
     val favoritesState: StateFlow<List<FavoriteRestaurant>> = _favoritesState
 
