@@ -6,15 +6,15 @@ class FavoritesRepository(
 ) {
     private var favoriteRestaurants: List<Restaurant> = emptyList()
 
-    private fun getFavoriteRestaurants() {
-        TODO("api로 리스트 받아서 덮어쓰기")
+    fun getFavoriteRestaurants(): List<Restaurant> {
+        TODO("계정 정보로 firebase에서 리스트 받아서 덮어쓰기")
     }
 
     private fun register() {
-        TODO("api로 즐겨찾기에 음식점 추가하고 getFavoriteRestaurants() 호출 why? -> 즐겨찾기 업데이트")
+        TODO("firebase 즐겨찾기리스트에 음식점 추가하고 getFavoriteRestaurants() 호출 why? -> 즐겨찾기 업데이트")
     }
 
     private fun unregister() {
-        TODO("api로 즐겨찾기에 음식점 추가하고 getFavoriteRestaurants() 호출 why? -> 즐겨찾기 업데이트")
+        TODO("firebase 즐겨찾기리스트에 음식점 제거하고 getFavoriteRestaurants() 호출 why? -> 즐겨찾기 업데이트")
     }
 }
