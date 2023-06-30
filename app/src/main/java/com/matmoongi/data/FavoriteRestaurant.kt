@@ -1,11 +1,11 @@
 package com.matmoongi.data
 
 data class FavoriteRestaurant(
-    val place_id: String,
+    val placeId: String,
     val name: String,
-    val thumbnail_photo: String,
+    val thumbnailPhoto: String,
     val rating: String,
-    val rating_count: String,
+    val ratingCount: String,
     val address: String,
     val isLike: Boolean,
 )

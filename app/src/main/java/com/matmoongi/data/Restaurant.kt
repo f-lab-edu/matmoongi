@@ -1,12 +1,12 @@
 package com.matmoongi.data
 
 data class Restaurant(
-    val place_id: String,
+    val placeId: String,
     val name: String,
-    val thumbnail_photo: String,
+    val thumbnailPhoto: String,
     val photos: List<String>,
     val rating: String,
-    val rating_count: String,
+    val ratingCount: String,
     val address: String,
     val location: String,
     val isLike: Boolean,
