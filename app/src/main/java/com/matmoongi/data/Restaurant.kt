@@ -11,4 +11,6 @@ data class Restaurant(
     val location: String,
     val isLike: Boolean,
     val reviews: List<Review>,
+//    api 호출시 parameter로 넘기면 같은 위치의 다음 리스트 호출 가능
+    val pageToken: String?,
 )

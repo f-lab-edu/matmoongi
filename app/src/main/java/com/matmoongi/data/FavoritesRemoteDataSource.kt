@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 class FavoritesRemoteDataSource(
     private val ioDispatcher: CoroutineDispatcher,
 ) {
-    suspend fun fetchFavoriteRestaurants(): List<Restaurant> =
+    suspend fun getFavoriteRestaurants(): List<Restaurant> =
         // Move the execution to an IO-optimized thread since the ApiService
         // doesn't support coroutines and makes synchronous requests.
         withContext(ioDispatcher) {

@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 class RestaurantsRemoteDataSource(
     private val ioDispatcher: CoroutineDispatcher,
 ) {
-    suspend fun fetchNearbyRestaurants(): List<Restaurant> =
+    suspend fun getNearbyRestaurants(): List<Restaurant> =
         // Move the execution to an IO-optimized thread since the ApiService
         // doesn't support coroutines and makes synchronous requests.
         withContext(ioDispatcher) {

@@ -10,17 +10,28 @@ class FavoritesViewModel(
     private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
     // firebase의 리스트와 동기화 해야하므로 savedStateHandle 사용하지 않음
-    private val _favoritesState = MutableStateFlow(toFavoriteRestaurant())
+    private val _favoritesState: MutableStateFlow<List<FavoriteRestaurant>> = MutableStateFlow(
+        emptyList(),
+    )
 
     // The UI collects from this StateFlow to get its state updates
     val favoritesState: StateFlow<List<FavoriteRestaurant>> = _favoritesState
 
-    /** 음식점 즐겨찾기 버튼 클릭 - 제거 **/
-    private fun unregister() {
-        TODO("상태에 반영하려면 repo를 구독하는 무언가를 만들어야함")
+    /** 음식점 즐겨찾기 버튼 클릭 **/
+    private fun onClickFavoriteButton() {
+        TODO("즐겨찾기 등록 상태에 따라 추가/제거 메서드")
     }
 
-    private fun toFavoriteRestaurant(): List<FavoriteRestaurant> {
-        TODO("favorite repo에서 데이터 가져와서 가공하기")
+    private suspend fun getFavoriteRestaurantsList() {
+        favoritesRepository.getFavoriteRestaurants()
+        TODO("favoriteRestaurant로 가공해서 _favoritesState에 할당")
+    }
+
+    private fun registerToFavorites() {
+        favoritesRepository.register()
+    }
+
+    private fun unregisterInFavorites() {
+        favoritesRepository.unregister()
     }
 }
