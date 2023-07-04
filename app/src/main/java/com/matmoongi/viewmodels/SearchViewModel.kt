@@ -40,19 +40,12 @@ class SearchViewModel(
         val favoriteRestaurantPlaceIds = withContext(Dispatchers.IO) {
             favoritesRepository.getFavoriteRestaurants().map { it.placeId }.toSet()
         }
-        restaurants.map {
+        state[FEED_RESTAURANTS_LIST] = restaurants.map {
             it.toSearchRestaurant(favoriteRestaurantPlaceIds.contains(it.placeId))
         }
     }
 
-    private fun onClickSearchButton() {
-        viewModelScope.launch { refreshNearbyRestaurantList() }
-    }
-
-    private fun Restaurant.toSearchRestaurant(isLike: Boolean): SearchRestaurant = TODO("...")
-
-    /** 음식점 리스트 마지막 아이템을 오른쪽으로 당겨서 추가 목록 받기 **/
-    private suspend fun onPullLastItem() {
+    private suspend fun getMoreNearbyRestaurantList() {
         val currentRestaurants: List<SearchRestaurant> = state.get<List<SearchRestaurant>>(
             FEED_RESTAURANTS_LIST,
         ).orEmpty()
@@ -65,6 +58,17 @@ class SearchViewModel(
         state[FEED_RESTAURANTS_LIST] = currentRestaurants + restaurants.map {
             it.toSearchRestaurant(favoriteRestaurantPlaceIds.contains(it.placeId))
         }
+    }
+
+    private fun onClickSearchButton() {
+        viewModelScope.launch { refreshNearbyRestaurantList() }
+    }
+
+    private fun Restaurant.toSearchRestaurant(isLike: Boolean): SearchRestaurant = TODO("...")
+
+    /** 음식점 리스트 마지막 아이템을 오른쪽으로 당겨서 추가 목록 받기 **/
+    private suspend fun onPullLastItem() {
+        viewModelScope.launch { getMoreNearbyRestaurantList() }
     }
 
     /** 음식점 즐겨찾기 버튼 클릭 **/
