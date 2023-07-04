@@ -6,10 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import com.matmoongi.screens.SplashScreen
-import com.matmoongi.viewmodels.FeedViewModel
+import com.matmoongi.viewmodels.FavoritesViewModel
+import com.matmoongi.viewmodels.SearchViewModel
 
 class MainActivity : ComponentActivity() {
-    val feedViewModel: FeedViewModel by viewModels()
+    val searchViewModel: SearchViewModel by viewModels()
+    val favoritesViewModel: FavoritesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
