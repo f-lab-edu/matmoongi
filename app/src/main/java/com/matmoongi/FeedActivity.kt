@@ -6,10 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import com.matmoongi.screens.SplashScreen
-import com.matmoongi.viewmodels.MainViewModel
+import com.matmoongi.viewmodels.FeedViewModel
 
-class MainActivity : ComponentActivity() {
-    val mainViewModel: MainViewModel by viewModels()
+class FeedActivity : ComponentActivity() {
+    val feedViewModel: FeedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

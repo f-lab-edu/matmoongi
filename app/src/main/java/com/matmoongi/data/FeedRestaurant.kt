@@ -1,6 +1,6 @@
 package com.matmoongi.data
 
-data class MainRestaurant(
+data class FeedRestaurant(
     val placeId: String,
     val name: String,
     val thumbnailPhoto: String,
