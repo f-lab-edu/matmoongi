@@ -3,4 +3,8 @@
     <string name="matmoongi">맛뭉이</string>
     <string name="catchPhrase">내 주변 빠른 맛집 찾기</string>
     <string name="skipLogin">로그인 건너뛰기</string>
+    <string name="searchInCurrentLocation">현재 위치에서 재검색</string>
+    <string name="distance">현 위치로부터 %sm 이내</string>
+    <string name="rating">/5.0</string>
+    <string name="ratingCount">%s개의 평가</string>
 </resources>
