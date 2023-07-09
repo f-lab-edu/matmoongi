@@ -41,19 +41,19 @@ private val matmoongiTypography = Typography(
         platformStyle = PlatformTextStyle(includeFontPadding = false),
     ),
     bodyMedium = TextStyle(
-        fontFamily = FontFamily(Font(R.font.notosans_kr_regular)),
+        fontFamily = FontFamily(Font(R.font.nanum_narun_gothic)),
         fontSize = 16.sp,
         color = Color.Black,
         platformStyle = PlatformTextStyle(includeFontPadding = false),
     ),
     bodySmall = TextStyle(
-        fontFamily = FontFamily(Font(R.font.notosans_kr_regular)),
+        fontFamily = FontFamily(Font(R.font.nanum_narun_gothic)),
         fontSize = 12.sp,
         color = FONT_GRAY,
         platformStyle = PlatformTextStyle(includeFontPadding = false),
     ),
     titleLarge = TextStyle(
-        fontFamily = FontFamily(Font(R.font.notosans_kr_bold)),
+        fontFamily = FontFamily(Font(R.font.nanum_barun_gothic_bold)),
         fontSize = 24.sp,
         color = Color.Black,
         platformStyle = PlatformTextStyle(includeFontPadding = false),

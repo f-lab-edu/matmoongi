@@ -4,15 +4,16 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
@@ -22,15 +23,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.matmoongi.R
+import com.matmoongi.ResponsiveText
 import com.matmoongi.data.SearchRestaurant
 import com.matmoongi.theme.RATING_RED
 
@@ -38,11 +41,11 @@ import com.matmoongi.theme.RATING_RED
 fun RestaurantCard(searchRestaurant: SearchRestaurant) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .width(340.dp)
-            .fillMaxHeight(),
-        border = BorderStroke(1.dp, Color.White),
+            .padding(horizontal = 16.dp)
+            .fillMaxHeight(0.52f)
+            .aspectRatio(1f),
         elevation = CardDefaults.cardElevation(10.dp),
+        border = BorderStroke(1.dp, Color.White),
     ) {
         Column() {
             ImageArea(searchRestaurant)
@@ -52,30 +55,32 @@ fun RestaurantCard(searchRestaurant: SearchRestaurant) {
 }
 
 @Composable
-private fun ImageArea(searchRestaurant: SearchRestaurant) {
+private fun ColumnScope.ImageArea(searchRestaurant: SearchRestaurant) {
     Box(
         modifier = Modifier
+            .weight(0.7f)
             .fillMaxWidth()
-            .height(240.dp),
+            .fillMaxHeight(),
     ) {
         Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = Integer.parseInt(searchRestaurant.thumbnailPhoto)),
+            painter = painterResource(
+                id = searchRestaurant.thumbnailPhoto.toIntOrNull() ?: R.drawable.example,
+            ),
             contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Fit,
         )
-        FavoriteButton(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 12.dp, end = 12.dp),
-        )
+        FavoriteButton()
     }
 }
 
 @Composable
-private fun FavoriteButton(modifier: Modifier) {
+private fun BoxScope.FavoriteButton() {
     IconButton(
-        modifier = modifier,
         onClick = { /*TODO*/ },
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .padding(top = 12.dp, end = 12.dp),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_favoirte_star_hollow),
@@ -85,9 +90,10 @@ private fun FavoriteButton(modifier: Modifier) {
 }
 
 @Composable
-private fun TextArea(searchRestaurant: SearchRestaurant) {
+private fun ColumnScope.TextArea(searchRestaurant: SearchRestaurant) {
     Row(
         modifier = Modifier
+            .weight(0.3f)
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primaryContainer),
     ) {
@@ -102,15 +108,16 @@ private fun RowScope.RestaurantCardTextContent(searchRestaurant: SearchRestauran
             .weight(2f)
             .padding(top = 12.dp, start = 16.dp),
     ) {
-        Text(
+        ResponsiveText(
             text = searchRestaurant.name,
-            style = MaterialTheme.typography.titleLarge,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
+            textAlign = TextAlign.Start,
+            textStyle = MaterialTheme.typography.titleLarge,
+            maxLines = 2,
+            minSize = 16.sp,
         )
         Text(
-            modifier = Modifier.padding(top = 8.dp),
             text = stringResource(R.string.distance).format(searchRestaurant.distance),
+            modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -123,10 +130,10 @@ private fun RowScope.RestaurantCardTextContent(searchRestaurant: SearchRestauran
             searchRestaurant,
         )
         Text(
+            text = stringResource(R.string.ratingCount).format(searchRestaurant.ratingCount),
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(top = 8.dp),
-            text = stringResource(R.string.ratingCount).format(searchRestaurant.ratingCount),
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -141,8 +148,8 @@ private fun RatingText(searchRestaurant: SearchRestaurant) {
         append(stringResource(R.string.rating))
     }
     Text(
-        modifier = Modifier.fillMaxWidth(),
         text = annotatedString,
+        modifier = Modifier.fillMaxWidth(),
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.End,
     )

@@ -26,7 +26,7 @@ class SearchViewModel(
         state[FEED_RESTAURANTS_LIST] = listOf<SearchRestaurant>(
             SearchRestaurant(
                 "123",
-                "크라이치즈버거크라이치즈버거크라이치즈버거",
+                "크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거",
                 R.drawable.example.toString(),
                 "4.0",
                 "123",
