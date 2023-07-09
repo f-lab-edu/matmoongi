@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
-import com.matmoongi.screens.SplashScreen
+import com.matmoongi.screens.LoginScreen
 import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.SearchViewModel
 
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MaterialTheme { SplashScreen() }
+            MaterialTheme { LoginScreen() }
         }
     }
 }
