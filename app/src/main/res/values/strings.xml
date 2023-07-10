@@ -7,4 +7,5 @@
     <string name="distance">현 위치로부터 %sm 이내</string>
     <string name="rating">/5.0</string>
     <string name="ratingCount">%s개의 평가</string>
+    <string name="PassedTimeSinceWriting">%s일 전에 작성됨</string>
 </resources>
