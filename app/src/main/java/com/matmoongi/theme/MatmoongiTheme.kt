@@ -49,7 +49,7 @@ private val matmoongiTypography = Typography(
     bodySmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.nanum_narun_gothic)),
         fontSize = 12.sp,
-        color = FONT_GRAY,
+        color = LIGHT_GRAY,
         platformStyle = PlatformTextStyle(includeFontPadding = false),
     ),
     titleLarge = TextStyle(

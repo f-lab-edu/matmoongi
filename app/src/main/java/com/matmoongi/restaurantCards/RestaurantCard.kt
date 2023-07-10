@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.matmoongi.R
 import com.matmoongi.ResponsiveText
 import com.matmoongi.data.SearchRestaurant
-import com.matmoongi.theme.RATING_RED
+import com.matmoongi.theme.PINKY_RED
 
 @Composable
 fun RestaurantCard(searchRestaurant: SearchRestaurant) {
@@ -142,7 +142,7 @@ private fun RowScope.RestaurantCardTextContent(searchRestaurant: SearchRestauran
 @Composable
 private fun RatingText(searchRestaurant: SearchRestaurant) {
     val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = RATING_RED)) {
+        withStyle(style = SpanStyle(color = PINKY_RED)) {
             append(searchRestaurant.rating)
         }
         append(stringResource(R.string.rating))
