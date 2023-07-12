@@ -39,7 +39,7 @@ import com.matmoongi.restaurantCards.ReviewCard
 
 @ExperimentalMaterial3Api
 @Composable
-fun SearchScreen(searchRestaurantList: List<SearchRestaurant>) {
+fun SearchScreen(searchRestaurantList: List<SearchRestaurant>, onClickUserIconButton: () -> Unit) {
     val pagerState = rememberPagerState()
 
     Column(
@@ -47,7 +47,7 @@ fun SearchScreen(searchRestaurantList: List<SearchRestaurant>) {
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background),
     ) {
-        TopBar()
+        TopBar(onClickUserIconButton)
         RefreshTextButton()
         RestaurantCardsList(pagerState, searchRestaurantList)
     }
@@ -55,12 +55,12 @@ fun SearchScreen(searchRestaurantList: List<SearchRestaurant>) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun TopBar() {
+fun TopBar(onClickUserButton: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {},
         modifier = Modifier.fillMaxWidth(),
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onClickUserButton) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_user),
                     contentDescription = null,
@@ -114,7 +114,7 @@ fun SearchScreenPreview(
     @PreviewParameter(SampleRestaurantCardPreview::class)
     searchRestaurantList: List<SearchRestaurant>,
 ) {
-    SearchScreen(searchRestaurantList)
+    SearchScreen(searchRestaurantList, onClickUserIconButton = {})
 }
 
 class SampleRestaurantCardPreview : PreviewParameterProvider<List<SearchRestaurant>> {
