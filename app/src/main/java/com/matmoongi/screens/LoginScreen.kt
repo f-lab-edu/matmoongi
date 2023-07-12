@@ -39,7 +39,7 @@ fun LoginScreen() {
             textAlign = TextAlign.Center,
         )
         Text(
-            text = stringResource(R.string.catchPhrase),
+            text = stringResource(R.string.catch_phrase),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
         )
@@ -49,7 +49,7 @@ fun LoginScreen() {
             modifier = Modifier.fillMaxWidth().padding(top = 120.dp),
         )
         Text(
-            text = stringResource(R.string.skipLogin),
+            text = stringResource(R.string.skip_login),
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             textAlign = TextAlign.Center,
         )

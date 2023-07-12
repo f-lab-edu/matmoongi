@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Matmoongi</string>
     <string name="matmoongi">맛뭉이</string>
-    <string name="catchPhrase">내 주변 빠른 맛집 찾기</string>
-    <string name="skipLogin">로그인 건너뛰기</string>
-    <string name="searchInCurrentLocation">현재 위치에서 재검색</string>
+    <string name="catch_phrase">내 주변 빠른 맛집 찾기</string>
+    <string name="skip_login">로그인 건너뛰기</string>
+    <string name="search_in_current_location">현재 위치에서 재검색</string>
     <string name="distance">현 위치로부터 %sm 이내</string>
     <string name="rating">/5.0</string>
-    <string name="ratingCount">%s개의 평가</string>
-    <string name="PassedTimeSinceWriting">%s일 전에 작성됨</string>
+    <string name="rating_count">%s개의 평가</string>
+    <string name="past_days_from_posted">%s일 전에 작성됨</string>
 </resources>

@@ -47,7 +47,7 @@ fun ReviewCard(review: Review) {
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = stringResource(R.string.PassedTimeSinceWriting).format(review.timeSinceWriting),
+            text = stringResource(R.string.past_days_from_posted).format(review.timeSinceWriting),
             modifier = Modifier
                 .padding(end = 16.dp, bottom = 16.dp)
                 .align(Alignment.End),

@@ -82,7 +82,7 @@ fun RefreshTextButton() {
             .clickable(enabled = true) {},
     ) {
         Text(
-            text = stringResource(R.string.searchInCurrentLocation),
+            text = stringResource(R.string.search_in_current_location),
         )
         Image(painter = painterResource(id = R.drawable.ic_refresh), contentDescription = null)
     }

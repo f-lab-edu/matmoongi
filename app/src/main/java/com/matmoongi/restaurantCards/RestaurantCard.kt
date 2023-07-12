@@ -130,7 +130,7 @@ private fun RowScope.RestaurantCardTextContent(searchRestaurant: SearchRestauran
             searchRestaurant,
         )
         Text(
-            text = stringResource(R.string.ratingCount).format(searchRestaurant.ratingCount),
+            text = stringResource(R.string.rating_count).format(searchRestaurant.ratingCount),
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(top = 8.dp),
