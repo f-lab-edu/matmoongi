@@ -41,7 +41,7 @@ import com.matmoongi.restaurantCards.ReviewCard
 @Composable
 fun SearchScreen(
     searchRestaurantList: List<SearchRestaurant>,
-    onClickUserIconButton: () -> Unit
+    onClickUserIconButton: () -> Unit,
 ) {
     val pagerState = rememberPagerState()
 
