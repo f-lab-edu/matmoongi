@@ -32,7 +32,7 @@ class SearchViewModel(
                 "123",
                 "123",
                 false,
-                review = Review("123", "123", "123", "123", "123"),
+                review = Review("1226", "1", "1", 4.7, "1"),
             ),
             SearchRestaurant(
                 "123",
@@ -42,7 +42,7 @@ class SearchViewModel(
                 "123",
                 "123",
                 false,
-                review = Review("123", "123", "123", "123", "123"),
+                review = Review("2", "2", "2", 1.5, "2"),
             ),
         )
     }

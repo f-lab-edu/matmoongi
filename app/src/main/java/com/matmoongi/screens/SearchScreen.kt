@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.matmoongi.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,8 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,10 +35,13 @@ import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
 import com.matmoongi.restaurantCards.RestaurantCard
+import com.matmoongi.restaurantCards.ReviewCard
 
 @ExperimentalMaterial3Api
 @Composable
 fun SearchScreen(searchRestaurantList: List<SearchRestaurant>) {
+    val pagerState = rememberPagerState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,8 +49,7 @@ fun SearchScreen(searchRestaurantList: List<SearchRestaurant>) {
     ) {
         TopBar()
         RefreshTextButton()
-        RestaurantCardsList(searchRestaurantList)
-        ReviewCardsList()
+        RestaurantCardsList(pagerState, searchRestaurantList)
     }
 }
 
@@ -55,7 +61,10 @@ fun TopBar() {
         modifier = Modifier.fillMaxWidth(),
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(painter = painterResource(id = R.drawable.ic_user), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_user),
+                    contentDescription = null,
+                )
             }
         },
         colors = centerAlignedTopAppBarColors(
@@ -73,29 +82,29 @@ fun RefreshTextButton() {
             .clickable(enabled = true) {},
     ) {
         Text(
-            text = stringResource(R.string.searchInCurrentLocation),
+            text = stringResource(R.string.search_in_current_location),
         )
         Image(painter = painterResource(id = R.drawable.ic_refresh), contentDescription = null)
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
-fun RestaurantCardsList(searchRestaurantList: List<SearchRestaurant>) {
-    LazyRow(
+fun RestaurantCardsList(
+    pagerState: PagerState,
+    searchRestaurantList: List<SearchRestaurant>,
+) {
+    HorizontalPager(
+        pageCount = searchRestaurantList.size,
         modifier = Modifier
             .padding(top = 20.dp)
             .wrapContentSize(),
+        state = pagerState,
         contentPadding = PaddingValues(8.dp),
     ) {
-        items(searchRestaurantList, itemContent = { item ->
-            RestaurantCard(item)
-        })
+        RestaurantCard(searchRestaurant = searchRestaurantList[it])
     }
-}
-
-@Composable
-fun ReviewCardsList() {
-    LazyRow {}
+    ReviewCard(searchRestaurantList[pagerState.settledPage].review)
 }
 
 @ExperimentalMaterial3Api
@@ -119,7 +128,7 @@ class SampleRestaurantCardPreview : PreviewParameterProvider<List<SearchRestaura
                 "123",
                 "123",
                 false,
-                review = Review("123", "123", "123", "123", "123"),
+                review = Review("123", "123", "123", 1.5, "123"),
             ),
         ),
     )
