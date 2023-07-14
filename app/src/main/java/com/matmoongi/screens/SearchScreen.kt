@@ -39,7 +39,10 @@ import com.matmoongi.restaurantCards.ReviewCard
 
 @ExperimentalMaterial3Api
 @Composable
-fun SearchScreen(searchRestaurantList: List<SearchRestaurant>, onClickUserIconButton: () -> Unit) {
+fun SearchScreen(
+    searchRestaurantList: List<SearchRestaurant>,
+    onClickUserIconButton: () -> Unit
+) {
     val pagerState = rememberPagerState()
 
     Column(
