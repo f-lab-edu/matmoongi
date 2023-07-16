@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun showDialog(activity: AppCompatActivity) {
+fun showPermissionGuideDialog(activity: AppCompatActivity) {
     val fragmentManager = activity.supportFragmentManager
     val transaction = fragmentManager.beginTransaction()
     transaction
@@ -76,7 +76,7 @@ private fun checkPermission(activity: AppCompatActivity) {
 
         shouldShowRequestPermissionRationale(activity, COARSE_LOCATION_PERMISSION)
         -> {
-            showDialog(activity)
+            showPermissionGuideDialog(activity)
         }
 
         else -> {
