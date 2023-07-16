@@ -37,7 +37,7 @@ fun showPermissionGuideDialog(activity: AppCompatActivity) {
     val fragmentManager = activity.supportFragmentManager
     val transaction = fragmentManager.beginTransaction()
     transaction
-        .add(android.R.id.content, PermissionDialogFragment)
+        .add(android.R.id.content, PermissionDialogFragment())
         .addToBackStack(null)
         .commit()
 }
