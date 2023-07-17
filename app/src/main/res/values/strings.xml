@@ -16,4 +16,5 @@
     <string name="fine_location_permission_guide"><![CDATA[정확한 위치 정보는 앱 사용 경험을 향상시킬 수 있습니다. 설정 > 애플리케이션 > Matmoongi 에서 정확한 위치 권한을 허용해주세요]]></string>
     <string name="coarse_location_permission_guide"><![CDATA[가까운 음식점 정보를 위해 위치 권한이 필요합니다. 설정 > 애플리케이션 > Matmoongi 에서 위치 권한을 허용해주세요]]></string>
     <string name="confirm">확인</string>
+    <string name="my_page">마이페이지</string>
 </resources>

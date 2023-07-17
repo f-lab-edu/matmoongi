@@ -10,9 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.matmoongi.screens.FavoriteScreen
 import com.matmoongi.screens.LoginScreen
 import com.matmoongi.screens.MyPageScreen
 import com.matmoongi.screens.SearchScreen
+import com.matmoongi.screens.TermsScreen
 import com.matmoongi.viewmodels.SearchViewModel
 
 private const val LOGIN_SCREEN = "loginScreen"
@@ -57,22 +59,33 @@ private fun AppNavHost(
         }
 
         composable(MY_PAGE_SCREEN) {
-            MyPageScreen()
+            MyPageScreen(navController::backToSearch)
         }
 
         composable(FAVORITE_SCREEN) {
-            MyPageScreen()
+            FavoriteScreen()
         }
 
         composable(TERMS_SCREEN) {
-            MyPageScreen()
+            TermsScreen()
         }
     }
 }
 
+private fun NavController.backToSearch() {
+    navigate(SEARCH_SCREEN) {
+        popBackStack()
+        launchSingleTop = true
+    }
+}
+
 private fun NavController.goToMyPage() {
-    navigate(MY_PAGE_SCREEN)
+    navigate(MY_PAGE_SCREEN) {
+        launchSingleTop = true
+    }
 }
 private fun NavController.skipLoginToSearch() {
-    navigate(SEARCH_SCREEN)
+    navigate(SEARCH_SCREEN) {
+        launchSingleTop = true
+    }
 }
