@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -20,10 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.matmoongi.R
-
-enum class MyPageItem {
-    LoginLogout, Favorite, Version, Terms, SignOut
-}
+import com.matmoongi.viewmodels.MyPageItem
 
 @ExperimentalMaterial3Api
 @Composable
@@ -79,7 +75,7 @@ private fun MyPageTopBar(onclickBackButton: () -> Unit) {
 }
 
 @Composable
-private fun LazyItemScope.MyPageItemButton(itemIndex: Int, color: Color) {
+private fun MyPageItemButton(itemIndex: Int, color: Color) {
     TextButton(
         onClick = { TODO("마이페이지 아이템 클릭 이벤트 구현") },
         modifier = Modifier

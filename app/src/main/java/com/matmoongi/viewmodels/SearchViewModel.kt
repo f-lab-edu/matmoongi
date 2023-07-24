@@ -6,7 +6,9 @@ import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
 import kotlinx.coroutines.flow.StateFlow
-
+enum class MyPageItem {
+    LoginLogout, Favorite, Version, Terms, SignOut
+}
 private const val FEED_RESTAURANTS_LIST = "feedRestaurantsList"
 
 class SearchViewModel(
@@ -45,6 +47,13 @@ class SearchViewModel(
                 review = Review("2", "2", "2", 1.5, "2"),
             ),
         )
+    }
+
+    private fun checkLoginState() {
+        TODO("네아로로 로그인 상태 확인")
+    }
+    private fun refreshMyPageItem() {
+        TODO("로그인 체크하고 마이페이지 아이템 설정")
     }
 
 //    /** 주변 음식점을 검색해서 받아오기 - 현재 위치 기반 **/

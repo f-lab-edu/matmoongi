@@ -14,7 +14,7 @@ class PermissionDialogFragment : DialogFragment() {
     ): View {
         val dialogView = inflater.inflate(R.layout.dialog_location_permission, container, false)
 
-        dialogView.findViewById<View>(R.id.confirmButton).setOnClickListener { this.dismiss() }
+        dialogView.findViewById<View>(R.id.confirm_button).setOnClickListener { this.dismiss() }
 
         return dialogView
     }
