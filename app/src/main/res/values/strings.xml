@@ -8,4 +8,12 @@
     <string name="rating">/5.0</string>
     <string name="rating_count">%s개의 평가</string>
     <string name="past_days_from_posted">%s일 전에 작성됨</string>
+    <string name="toast_need_fine_location_permission">원활한 앱 사용을 위해서는 정확한 위치정보가 필요합니다.</string>
+    <string name="toast_need_location_permission">원활한 앱 사용을 위해서는 최소한의 위치정보가 필요합니다.</string>
+    <string name="permission_guide">권한 허용 안내</string>
+    <string name="necessary_permission">필수 권한</string>
+    <string name="optional_permission">선택 권한</string>
+    <string name="fine_location_permission_guide"><![CDATA[정확한 위치 정보는 앱 사용 경험을 향상시킬 수 있습니다. 설정 > 애플리케이션 > Matmoongi 에서 정확한 위치 권한을 허용해주세요]]></string>
+    <string name="coarse_location_permission_guide"><![CDATA[가까운 음식점 정보를 위해 위치 권한이 필요합니다. 설정 > 애플리케이션 > Matmoongi 에서 위치 권한을 허용해주세요]]></string>
+    <string name="confirm">확인</string>
 </resources>
