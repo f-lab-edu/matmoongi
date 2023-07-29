@@ -37,6 +37,7 @@ import com.matmoongi.data.SearchRestaurant
 import com.matmoongi.restaurantCards.RestaurantCard
 import com.matmoongi.restaurantCards.ReviewCard
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun SearchScreen(
@@ -58,7 +59,7 @@ fun SearchScreen(
 
 @ExperimentalMaterial3Api
 @Composable
-fun TopBar(onClickUserButton: () -> Unit) {
+private fun TopBar(onClickUserButton: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {},
         modifier = Modifier.fillMaxWidth(),
@@ -78,7 +79,7 @@ fun TopBar(onClickUserButton: () -> Unit) {
 }
 
 @Composable
-fun RefreshTextButton() {
+private fun RefreshTextButton() {
     Row(
         modifier = Modifier
             .padding(top = 36.dp, start = 16.dp)
@@ -93,7 +94,7 @@ fun RefreshTextButton() {
 
 @ExperimentalFoundationApi
 @Composable
-fun RestaurantCardsList(
+private fun RestaurantCardsList(
     pagerState: PagerState,
     searchRestaurantList: List<SearchRestaurant>,
 ) {
@@ -113,7 +114,7 @@ fun RestaurantCardsList(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun SearchScreenPreview(
+private fun SearchScreenPreview(
     @PreviewParameter(SampleRestaurantCardPreview::class)
     searchRestaurantList: List<SearchRestaurant>,
 ) {

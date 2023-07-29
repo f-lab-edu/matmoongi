@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ import com.matmoongi.theme.MatmoongiTheme
 import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.SearchViewModel
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun showPermissionGuideDialog(activity: AppCompatActivity) {
+private fun showPermissionGuideDialog(activity: AppCompatActivity) {
     val fragmentManager = activity.supportFragmentManager
     val transaction = fragmentManager.beginTransaction()
     transaction.add(android.R.id.content, PermissionDialogFragment())
@@ -73,7 +75,7 @@ private fun explainRationalToNeedFineGrainedLocationPermission() =
         }
     }
 
-fun Context.isGranted(permission: String): Boolean {
+private fun Context.isGranted(permission: String): Boolean {
     val checkResult = ContextCompat.checkSelfPermission(this, permission)
     return checkResult == PackageManager.PERMISSION_GRANTED
 }

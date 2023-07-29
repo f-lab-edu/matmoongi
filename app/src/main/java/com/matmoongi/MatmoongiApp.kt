@@ -1,9 +1,9 @@
 package com.matmoongi
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,6 +23,7 @@ private const val MY_PAGE_SCREEN = "myPageScreen"
 private const val FAVORITE_SCREEN = "favoriteScreen"
 private const val TERMS_SCREEN = "termsScreen"
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun MatmoongiApp(searchViewModel: SearchViewModel) {
@@ -37,6 +38,7 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
     )
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 private fun AppNavHost(
@@ -53,13 +55,13 @@ private fun AppNavHost(
 
         composable(SEARCH_SCREEN) {
             SearchScreen(
-                searchViewModel.restaurantsState.collectAsState().value,
+                searchViewModel.getSearchRestaurantList(),
                 navController::goToMyPage,
             )
         }
 
         composable(MY_PAGE_SCREEN) {
-            MyPageScreen(navController::backToSearch)
+            MyPageScreen(navController::backToSearch, searchViewModel.getMyPageItemList())
         }
 
         composable(FAVORITE_SCREEN) {

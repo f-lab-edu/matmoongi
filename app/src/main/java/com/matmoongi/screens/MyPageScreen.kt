@@ -23,7 +23,7 @@ import com.matmoongi.viewmodels.MyPageItem
 
 @ExperimentalMaterial3Api
 @Composable
-fun MyPageScreen(onclickBackButton: () -> Unit) {
+fun MyPageScreen(onclickBackButton: () -> Unit, menuItemList: List<MyPageItem>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,15 +31,16 @@ fun MyPageScreen(onclickBackButton: () -> Unit) {
     ) {
         MyPageTopBar(onclickBackButton)
         LazyColumn {
-            items(MyPageItem.values().size) {
-                if (it % 2 == 0) {
-                    MyPageItemButton(itemIndex = it, color = MaterialTheme.colorScheme.background)
+            items(menuItemList.size) {
+                val backgroundColor = if (it % 2 == 0) {
+                    MaterialTheme.colorScheme.background
                 } else {
-                    MyPageItemButton(
-                        itemIndex = it,
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                    )
+                    MaterialTheme.colorScheme.primaryContainer
                 }
+                MyPageItemButton(
+                    menuItemTitle = menuItemList[it].name,
+                    color = backgroundColor,
+                )
             }
         }
     }
@@ -75,7 +76,7 @@ private fun MyPageTopBar(onclickBackButton: () -> Unit) {
 }
 
 @Composable
-private fun MyPageItemButton(itemIndex: Int, color: Color) {
+private fun MyPageItemButton(menuItemTitle: String, color: Color) {
     TextButton(
         onClick = { TODO("마이페이지 아이템 클릭 이벤트 구현") },
         modifier = Modifier
@@ -83,7 +84,7 @@ private fun MyPageItemButton(itemIndex: Int, color: Color) {
             .background(color),
     ) {
         Text(
-            text = MyPageItem.values()[itemIndex].toString(),
+            text = menuItemTitle,
             modifier = Modifier.fillMaxSize(),
             style = MaterialTheme.typography.bodyMedium,
         )
