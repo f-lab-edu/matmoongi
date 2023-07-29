@@ -1,5 +1,7 @@
 package com.matmoongi.viewmodels
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
@@ -7,7 +9,10 @@ import androidx.lifecycle.ViewModel
 import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import kotlinx.coroutines.flow.StateFlow
+
 enum class MyPageItem {
     LoginLogout, Favorite, Version, Terms, SignOut
 }
@@ -30,6 +35,24 @@ class SearchViewModel(
         MY_PAGE_ITEM_STATE,
         emptyList(),
     )
+
+    fun oAuthLoginCallback(loginSuccess: () -> Unit): OAuthLoginCallback =
+        object : OAuthLoginCallback {
+            override fun onSuccess() {
+                loginSuccess()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.d("에러", errorCode)
+                Log.d("에러", errorDescription.toString())
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
 
     init {
         // 앱 시작 시 현 위치로 음식점 검색
@@ -67,6 +90,9 @@ class SearchViewModel(
     private fun checkLoginState() {
         TODO("네아로로 로그인 상태 확인")
     }
+
+    fun loginWithNaver(context: Context, oAuthLoginCallback: OAuthLoginCallback): () -> Unit =
+        { NaverIdLoginSDK.authenticate(context, oAuthLoginCallback) }
 
     @Composable
     fun getMyPageItemList(): List<MyPageItem> = myPageItemState.collectAsState().value

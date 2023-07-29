@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -49,8 +50,13 @@ private fun AppNavHost(
         navController = navController,
         startDestination = LOGIN_SCREEN,
     ) {
+        val oAuthCallback = searchViewModel.oAuthLoginCallback { navController.goToSearch() }
+
         composable(LOGIN_SCREEN) {
-            LoginScreen(navController::skipLoginToSearch)
+            LoginScreen(
+                navController::goToSearch,
+                searchViewModel.loginWithNaver(LocalContext.current, oAuthCallback),
+            )
         }
 
         composable(SEARCH_SCREEN) {
@@ -86,7 +92,8 @@ private fun NavController.goToMyPage() {
         launchSingleTop = true
     }
 }
-private fun NavController.skipLoginToSearch() {
+
+private fun NavController.goToSearch() {
     navigate(SEARCH_SCREEN) {
         launchSingleTop = true
     }
