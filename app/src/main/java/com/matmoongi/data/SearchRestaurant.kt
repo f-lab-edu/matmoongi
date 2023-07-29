@@ -1,9 +1,5 @@
 package com.matmoongi.data
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class SearchRestaurant(
     val placeId: String,
     val name: String,
@@ -13,4 +9,4 @@ data class SearchRestaurant(
     val distance: String,
     val isLike: Boolean,
     val review: Review,
-) : Parcelable
+)
