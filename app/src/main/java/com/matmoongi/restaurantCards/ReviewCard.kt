@@ -57,7 +57,7 @@ fun ReviewCard(review: Review) {
 }
 
 @Composable
-fun ProfileAndRating(review: Review) {
+private fun ProfileAndRating(review: Review) {
     Row(
         modifier = Modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -89,7 +89,7 @@ fun ProfileAndRating(review: Review) {
 }
 
 @Composable
-fun RatingStar(rating: Double) {
+private fun RatingStar(rating: Double) {
     val star = ImageVector.vectorResource(id = R.drawable.ic_rating_star)
     val halfStar = ImageVector.vectorResource(id = R.drawable.ic_rating_star_half)
     val starCount = rating.toInt()

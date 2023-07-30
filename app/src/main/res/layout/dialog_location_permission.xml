@@ -2,91 +2,85 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/dialog_shape"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:src="@drawable/signature" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanum_barun_gothic_bold"
+        android:gravity="center"
+        android:text="@string/permission_guide"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/dialog_shape"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/signature" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/nanum_barun_gothic_bold"
-            android:gravity="center"
-            android:text="@string/permission_guide"
+            android:text="@string/necessary_permission"
             android:textColor="@color/black"
-            android:textSize="24sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nanum_barun_gothic_bold"
-                android:text="@string/necessary_permission"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_narun_gothic"
-                android:text="@string/coarse_location_permission_guide"
-                android:textColor="@color/light_gray"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/nanum_barun_gothic_bold"
-                android:text="@string/optional_permission"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_narun_gothic"
-                android:text="@string/fine_location_permission_guide"
-                android:textColor="@color/light_gray"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/confirmButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_narun_gothic"
+            android:text="@string/coarse_location_permission_guide"
+            android:textColor="@color/light_gray"
+            android:textSize="16sp" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/button_confirm"
             android:fontFamily="@font/nanum_barun_gothic_bold"
-            android:gravity="center"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
-            android:text="@string/confirm"
-            android:textColor="@color/main"
+            android:text="@string/optional_permission"
+            android:textColor="@color/black"
             android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_narun_gothic"
+            android:text="@string/fine_location_permission_guide"
+            android:textColor="@color/light_gray"
+            android:textSize="16sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_confirm"
+        android:fontFamily="@font/nanum_barun_gothic_bold"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:text="@string/confirm"
+        android:textColor="@color/main"
+        android:textSize="20sp" />
 </LinearLayout>

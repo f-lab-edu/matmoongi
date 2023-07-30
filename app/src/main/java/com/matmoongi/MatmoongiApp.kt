@@ -1,18 +1,20 @@
 package com.matmoongi
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.matmoongi.screens.FavoriteScreen
 import com.matmoongi.screens.LoginScreen
 import com.matmoongi.screens.MyPageScreen
 import com.matmoongi.screens.SearchScreen
+import com.matmoongi.screens.TermsScreen
 import com.matmoongi.viewmodels.SearchViewModel
 
 private const val LOGIN_SCREEN = "loginScreen"
@@ -21,6 +23,7 @@ private const val MY_PAGE_SCREEN = "myPageScreen"
 private const val FAVORITE_SCREEN = "favoriteScreen"
 private const val TERMS_SCREEN = "termsScreen"
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun MatmoongiApp(searchViewModel: SearchViewModel) {
@@ -35,6 +38,7 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
     )
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 private fun AppNavHost(
@@ -51,28 +55,39 @@ private fun AppNavHost(
 
         composable(SEARCH_SCREEN) {
             SearchScreen(
-                searchViewModel.restaurantsState.collectAsState().value,
+                searchViewModel.getSearchRestaurantList(),
                 navController::goToMyPage,
             )
         }
 
         composable(MY_PAGE_SCREEN) {
-            MyPageScreen()
+            MyPageScreen(navController::backToSearch, searchViewModel.getMyPageItemList())
         }
 
         composable(FAVORITE_SCREEN) {
-            MyPageScreen()
+            FavoriteScreen()
         }
 
         composable(TERMS_SCREEN) {
-            MyPageScreen()
+            TermsScreen()
         }
     }
 }
 
+private fun NavController.backToSearch() {
+    navigate(SEARCH_SCREEN) {
+        popBackStack()
+        launchSingleTop = true
+    }
+}
+
 private fun NavController.goToMyPage() {
-    navigate(MY_PAGE_SCREEN)
+    navigate(MY_PAGE_SCREEN) {
+        launchSingleTop = true
+    }
 }
 private fun NavController.skipLoginToSearch() {
-    navigate(SEARCH_SCREEN)
+    navigate(SEARCH_SCREEN) {
+        launchSingleTop = true
+    }
 }

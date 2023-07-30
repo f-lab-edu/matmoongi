@@ -1,13 +1,19 @@
 package com.matmoongi.viewmodels
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
 import kotlinx.coroutines.flow.StateFlow
+enum class MyPageItem {
+    LoginLogout, Favorite, Version, Terms, SignOut
+}
 
-private const val FEED_RESTAURANTS_LIST = "feedRestaurantsList"
+private const val SEARCH_RESTAURANT_STATE = "searchRestaurantList"
+private const val MY_PAGE_ITEM_STATE = "myPageItemList"
 
 class SearchViewModel(
 //    private val favoritesRepository: FavoritesRepository,
@@ -15,15 +21,20 @@ class SearchViewModel(
     private val state: SavedStateHandle,
 ) : ViewModel() {
 
-    val restaurantsState: StateFlow<List<SearchRestaurant>> = state.getStateFlow(
-        FEED_RESTAURANTS_LIST,
+    private val restaurantsState: StateFlow<List<SearchRestaurant>> = state.getStateFlow(
+        SEARCH_RESTAURANT_STATE,
+        emptyList(),
+    )
+
+    private val myPageItemState: StateFlow<List<MyPageItem>> = state.getStateFlow(
+        MY_PAGE_ITEM_STATE,
         emptyList(),
     )
 
     init {
         // 앱 시작 시 현 위치로 음식점 검색
 //        viewModelScope.launch { refreshNearbyRestaurantList() }
-        state[FEED_RESTAURANTS_LIST] = listOf<SearchRestaurant>(
+        state[SEARCH_RESTAURANT_STATE] = listOf<SearchRestaurant>(
             SearchRestaurant(
                 "123",
                 "크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거",
@@ -45,7 +56,20 @@ class SearchViewModel(
                 review = Review("2", "2", "2", 1.5, "2"),
             ),
         )
+
+        // 임시 마이페이지 아이템 리스트 설정
+        state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(MyPageItem.LoginLogout, MyPageItem.Favorite)
     }
+
+    @Composable
+    fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
+
+    private fun checkLoginState() {
+        TODO("네아로로 로그인 상태 확인")
+    }
+
+    @Composable
+    fun getMyPageItemList(): List<MyPageItem> = myPageItemState.collectAsState().value
 
 //    /** 주변 음식점을 검색해서 받아오기 - 현재 위치 기반 **/
 //    private suspend fun refreshNearbyRestaurantList() {
