@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat
 import com.matmoongi.theme.MatmoongiTheme
 import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.SearchViewModel
-import com.navercorp.nid.NaverIdLoginSDK
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -27,13 +26,6 @@ class MainActivity : AppCompatActivity() {
     private val favoritesViewModel: FavoritesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        NaverIdLoginSDK.initialize(
-            this,
-            BuildConfig.NAVER_LOGIN_CLINET_ID,
-            BuildConfig.NAVER_LOGIN_CLINET_SECRET,
-            BuildConfig.NAVER_LOGIN_CLINET_NAME,
-        )
 
         checkPermission(this)
 

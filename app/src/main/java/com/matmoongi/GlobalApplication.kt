@@ -6,6 +6,7 @@ import com.navercorp.nid.NaverIdLoginSDK
 class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
         NaverIdLoginSDK.initialize(
             this,
             BuildConfig.NAVER_LOGIN_CLINET_ID,
