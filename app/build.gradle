@@ -5,7 +5,7 @@ plugins {
 }
 
 def properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+properties.load(project.rootProject.file('matmoongi.properties').newDataInputStream())
 
 android {
     namespace 'com.matmoongi'
@@ -19,9 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "NAVER_LOGIN_CLINET_ID", properties["NAVER_LOGIN_CLINET_ID"]
-        buildConfigField "String", "NAVER_LOGIN_CLINET_SECRET", properties["NAVER_LOGIN_CLINET_SECRET"]
-        buildConfigField "String", "NAVER_LOGIN_CLINET_NAME", properties["NAVER_LOGIN_CLINET_NAME"]
+        buildConfigField "String", "NAVER_LOGIN_CLINET_ID", "\"" + properties["NAVER_LOGIN_CLINET_ID"] + "\""
+        buildConfigField "String", "NAVER_LOGIN_CLINET_SECRET", "\"" + properties["NAVER_LOGIN_CLINET_SECRET"] + "\""
+        buildConfigField "String", "NAVER_LOGIN_CLINET_NAME", "\"" + properties["NAVER_LOGIN_CLINET_NAME"] + "\""
     }
 
     buildTypes {
