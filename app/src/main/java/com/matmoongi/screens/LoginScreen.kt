@@ -21,7 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.matmoongi.R
 
 @Composable
-fun LoginScreen(onClickSkipLoginButton: () -> Unit, onClickNaverLoginButton: () -> Unit) {
+fun LoginScreen(
+    onClickSkipLoginButton: () -> Unit,
+    onClickNaverLoginButton: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,8 +58,10 @@ fun LoginScreen(onClickSkipLoginButton: () -> Unit, onClickNaverLoginButton: () 
         Image(
             painter = painterResource(id = R.drawable.ic_naver_login),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
-                .padding(top = 120.dp).clickable { onClickNaverLoginButton() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 120.dp)
+                .clickable { onClickNaverLoginButton() },
         )
         TextButton(
             onClick = onClickSkipLoginButton,

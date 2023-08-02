@@ -91,7 +91,7 @@ class SearchViewModel(
         TODO("네아로로 로그인 상태 확인")
     }
 
-    fun loginWithNaver(context: Context, oAuthLoginCallback: OAuthLoginCallback): () -> Unit =
+    fun onClickNaverLoginButton(context: Context, oAuthLoginCallback: OAuthLoginCallback): () -> Unit =
         { NaverIdLoginSDK.authenticate(context, oAuthLoginCallback) }
 
     @Composable

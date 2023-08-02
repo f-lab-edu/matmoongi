@@ -55,7 +55,7 @@ private fun AppNavHost(
         composable(LOGIN_SCREEN) {
             LoginScreen(
                 navController::goToSearch,
-                searchViewModel.loginWithNaver(LocalContext.current, oAuthCallback),
+                searchViewModel.onClickNaverLoginButton(LocalContext.current, oAuthCallback),
             )
         }
 
