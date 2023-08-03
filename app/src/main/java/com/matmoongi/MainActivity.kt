@@ -14,7 +14,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.matmoongi.theme.MatmoongiTheme
 import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.SearchViewModel
