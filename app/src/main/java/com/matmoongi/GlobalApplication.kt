@@ -9,9 +9,9 @@ class GlobalApplication : Application() {
 
         NaverIdLoginSDK.initialize(
             this,
-            BuildConfig.NAVER_LOGIN_CLINET_ID,
-            BuildConfig.NAVER_LOGIN_CLINET_SECRET,
-            BuildConfig.NAVER_LOGIN_CLINET_NAME,
+            BuildConfig.NAVER_LOGIN_CLIENT_ID,
+            BuildConfig.NAVER_LOGIN_CLIENT_SECRET,
+            BuildConfig.NAVER_LOGIN_CLIENT_NAME,
         )
     }
 }
