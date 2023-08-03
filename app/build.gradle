@@ -83,5 +83,10 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
+    def retrofit_gson_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_gson_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_gson_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
     implementation 'com.navercorp.nid:oauth:5.6.0'
 }
