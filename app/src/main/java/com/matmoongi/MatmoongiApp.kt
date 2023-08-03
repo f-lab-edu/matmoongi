@@ -1,5 +1,6 @@
 package com.matmoongi
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,9 @@ import com.matmoongi.screens.MyPageScreen
 import com.matmoongi.screens.SearchScreen
 import com.matmoongi.screens.TermsScreen
 import com.matmoongi.viewmodels.SearchViewModel
+import com.matmoongi.viewmodels.UserViewModel
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
 
 private const val LOGIN_SCREEN = "loginScreen"
 private const val SEARCH_SCREEN = "searchScreen"
@@ -27,7 +31,7 @@ private const val TERMS_SCREEN = "termsScreen"
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun MatmoongiApp(searchViewModel: SearchViewModel) {
+fun MatmoongiApp(userViewModel: UserViewModel, searchViewModel: SearchViewModel) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colorScheme.primary,
@@ -35,6 +39,7 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
     val navController = rememberNavController()
     AppNavHost(
         navController = navController,
+        userViewModel = userViewModel,
         searchViewModel = searchViewModel,
     )
 }
@@ -45,17 +50,34 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
 private fun AppNavHost(
     navController: NavHostController,
     searchViewModel: SearchViewModel,
+    userViewModel: UserViewModel,
 ) {
+    val context = LocalContext.current
+    val oAuthLoginCallback: OAuthLoginCallback =
+        object : OAuthLoginCallback {
+            override fun onSuccess() {
+                navController.goToSearch()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.d("에러", errorCode)
+                Log.d("에러", errorDescription.toString())
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
     NavHost(
         navController = navController,
         startDestination = LOGIN_SCREEN,
     ) {
-        val oAuthCallback = searchViewModel.oAuthLoginCallback { navController.goToSearch() }
-
         composable(LOGIN_SCREEN) {
             LoginScreen(
                 navController::goToSearch,
-                searchViewModel.onClickNaverLoginButton(LocalContext.current, oAuthCallback),
+                userViewModel.onClickNaverLoginButton(context, oAuthLoginCallback),
             )
         }
 

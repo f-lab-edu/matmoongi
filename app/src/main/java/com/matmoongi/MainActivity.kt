@@ -14,9 +14,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.matmoongi.theme.MatmoongiTheme
 import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.SearchViewModel
+import com.matmoongi.viewmodels.UserViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -24,13 +26,20 @@ class MainActivity : AppCompatActivity() {
 
     private val searchViewModel: SearchViewModel by viewModels()
     private val favoritesViewModel: FavoritesViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels { UserViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkPermission(this)
 
+        userViewModel.userLoginState.observe(
+            this,
+        ) {
+            searchViewModel.refreshMyPageItemList(it)
+        }
+
         setContent {
-            MatmoongiTheme { MatmoongiApp(searchViewModel) }
+            MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel) }
         }
     }
 }
