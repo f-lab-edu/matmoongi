@@ -2,6 +2,7 @@ package com.matmoongi.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.matmoongi.R
 
 @Composable
-fun LoginScreen(onClickSkipLoginButton: () -> Unit) {
+fun LoginScreen(
+    onClickSkipLoginButton: () -> Unit,
+    onClickNaverLoginButton: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,12 +54,14 @@ fun LoginScreen(onClickSkipLoginButton: () -> Unit) {
             color = MaterialTheme.colorScheme.background,
             style = MaterialTheme.typography.bodyMedium,
         )
+
         Image(
             painter = painterResource(id = R.drawable.ic_naver_login),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 120.dp),
+                .padding(top = 120.dp)
+                .clickable { onClickNaverLoginButton() },
         )
         TextButton(
             onClick = onClickSkipLoginButton,
