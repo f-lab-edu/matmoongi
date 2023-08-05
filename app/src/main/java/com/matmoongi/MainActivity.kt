@@ -31,9 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         checkPermission(this)
 
-        userViewModel.userLoginState.observe(
-            this,
-        ) {
+        userViewModel.userLoginState.observe(this) {
             searchViewModel.refreshMyPageItemList(it)
         }
 

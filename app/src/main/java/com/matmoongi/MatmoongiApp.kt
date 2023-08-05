@@ -1,6 +1,5 @@
 package com.matmoongi
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -19,8 +18,6 @@ import com.matmoongi.screens.SearchScreen
 import com.matmoongi.screens.TermsScreen
 import com.matmoongi.viewmodels.SearchViewModel
 import com.matmoongi.viewmodels.UserViewModel
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.OAuthLoginCallback
 
 private const val LOGIN_SCREEN = "loginScreen"
 private const val SEARCH_SCREEN = "searchScreen"
@@ -53,23 +50,7 @@ private fun AppNavHost(
     userViewModel: UserViewModel,
 ) {
     val context = LocalContext.current
-    val oAuthLoginCallback: OAuthLoginCallback =
-        object : OAuthLoginCallback {
-            override fun onSuccess() {
-                navController.goToSearch()
-            }
 
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Log.d("에러", errorCode)
-                Log.d("에러", errorDescription.toString())
-            }
-
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-        }
     NavHost(
         navController = navController,
         startDestination = LOGIN_SCREEN,
@@ -77,7 +58,12 @@ private fun AppNavHost(
         composable(LOGIN_SCREEN) {
             LoginScreen(
                 navController::goToSearch,
-                userViewModel.onClickNaverLoginButton(context, oAuthLoginCallback),
+                userViewModel.onClickNaverLoginButton(
+                    context,
+                    userViewModel.oAuthLoginCallback {
+                        navController.goToSearch()
+                    },
+                ),
             )
         }
 
