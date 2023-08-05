@@ -1,6 +1,6 @@
 package com.matmoongi.network
 
-import com.matmoongi.network.GsonConverter.gSonConverter
+import com.matmoongi.network.GsonConverter.gsonConverter
 import com.matmoongi.network.OkHttpClient.client
 import retrofit2.Retrofit
 
@@ -9,7 +9,7 @@ object ServiceFactory {
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(gSonConverter)
+            .addConverterFactory(gsonConverter)
             .build()
             .create(T::class.java)
 }
