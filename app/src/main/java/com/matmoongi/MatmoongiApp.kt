@@ -50,6 +50,10 @@ private fun AppNavHost(
     userViewModel: UserViewModel,
 ) {
     val context = LocalContext.current
+    val onClickLogoutButton = userViewModel.onClickLogoutButton { navController.goToLogin() }
+    val onClickSignOutButton = userViewModel.onClickSignOutButton { navController.goToLogin() }
+    // 자동 로그인
+    userViewModel.autoLogin(context, navController::goToSearch)
 
     NavHost(
         navController = navController,
@@ -57,11 +61,9 @@ private fun AppNavHost(
     ) {
         composable(LOGIN_SCREEN) {
             LoginScreen(
-                navController::goToSearch,
+                onClickSkipLoginButton = navController::skipToSearch,
             ) {
-                userViewModel.onClickNaverLoginButton(
-                    context,
-                ) { navController.goToSearch() }
+                userViewModel.onClickLoginButton(context, navController::goToSearch)
             }
         }
 
@@ -73,7 +75,17 @@ private fun AppNavHost(
         }
 
         composable(MY_PAGE_SCREEN) {
-            MyPageScreen(navController::backToSearch, searchViewModel.getMyPageItemList())
+            MyPageScreen(
+                searchViewModel.getMyPageItemList(),
+                navController::backToSearch,
+                searchViewModel.onClickMyPageMenuItem(
+                    onClickLoginItem = { navController.goToLogin() },
+                    onClickLogoutItem = onClickLogoutButton,
+                    onClickFavoriteItem = { navController.goToFavorite() },
+                    onClickTermsItem = { navController.goToTerms() },
+                    onClickSignOutItem = onClickSignOutButton,
+                ),
+            )
         }
 
         composable(FAVORITE_SCREEN) {
@@ -99,8 +111,44 @@ private fun NavController.goToMyPage() {
     }
 }
 
+private fun NavController.skipToSearch() {
+    navigate(SEARCH_SCREEN) {
+        launchSingleTop = true
+    }
+}
+
 private fun NavController.goToSearch() {
     navigate(SEARCH_SCREEN) {
+        // 로그인 후 서치 화면으로 갈때 백스택 초기화
+        popBackStack(
+            LOGIN_SCREEN,
+            inclusive = true,
+            saveState = false,
+        )
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToLogin() {
+    navigate(LOGIN_SCREEN) {
+        // 로그인 화면으로 갈때는 백스택 초기화
+        popBackStack(
+            SEARCH_SCREEN,
+            inclusive = true,
+            saveState = false,
+        )
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToFavorite() {
+    navigate(FAVORITE_SCREEN) {
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToTerms() {
+    navigate(FAVORITE_SCREEN) {
         launchSingleTop = true
     }
 }

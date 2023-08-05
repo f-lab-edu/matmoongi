@@ -60,6 +60,23 @@ class SearchViewModel(
         )
     }
 
+    fun onClickMyPageMenuItem(
+        onClickLoginItem: () -> Unit,
+        onClickLogoutItem: () -> Unit,
+        onClickFavoriteItem: () -> Unit,
+        onClickTermsItem: () -> Unit,
+        onClickSignOutItem: () -> Unit,
+    ): (myPageItem: String) -> Unit = {
+        when (it) {
+            MyPageItem.Login.name -> onClickLoginItem()
+            MyPageItem.Logout.name -> onClickLogoutItem()
+            MyPageItem.Favorite.name -> onClickFavoriteItem()
+            MyPageItem.Terms.name -> onClickTermsItem()
+            MyPageItem.SignOut.name -> onClickSignOutItem()
+            else -> {}
+        }
+    }
+
     @Composable
     fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
 

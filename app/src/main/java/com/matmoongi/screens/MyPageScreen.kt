@@ -23,7 +23,11 @@ import com.matmoongi.viewmodels.MyPageItem
 
 @ExperimentalMaterial3Api
 @Composable
-fun MyPageScreen(onclickBackButton: () -> Unit, menuItemList: List<MyPageItem>) {
+fun MyPageScreen(
+    menuItemList: List<MyPageItem>,
+    onclickBackButton: () -> Unit,
+    onClickMyPageMenuItem: (itemTitle: String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,6 +44,7 @@ fun MyPageScreen(onclickBackButton: () -> Unit, menuItemList: List<MyPageItem>) 
                 MyPageItemButton(
                     menuItemTitle = menuItemList[it].name,
                     color = backgroundColor,
+                    onClickMyPageMenuItem = onClickMyPageMenuItem,
                 )
             }
         }
@@ -76,9 +81,13 @@ private fun MyPageTopBar(onclickBackButton: () -> Unit) {
 }
 
 @Composable
-private fun MyPageItemButton(menuItemTitle: String, color: Color) {
+private fun MyPageItemButton(
+    menuItemTitle: String,
+    color: Color,
+    onClickMyPageMenuItem: (itemTitle: String) -> Unit,
+) {
     TextButton(
-        onClick = { TODO("마이페이지 아이템 클릭 이벤트 구현") },
+        onClick = { onClickMyPageMenuItem(menuItemTitle) },
         modifier = Modifier
             .fillMaxWidth()
             .background(color),

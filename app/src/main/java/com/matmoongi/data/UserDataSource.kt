@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.matmoongi.BuildConfig
 import com.matmoongi.network.NaverLoginService
+import com.matmoongi.network.NaverUserService
 import com.matmoongi.viewmodels.LoginResult
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLoginState
@@ -13,10 +14,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 @ExperimentalCoroutinesApi
 class UserDataSource(
+    private val naverUserService: NaverUserService,
     private val naverLoginService: NaverLoginService,
 ) {
     fun fetchUserProfile(accessToken: String): UserProfile =
-        naverLoginService.getUserProfile(accessToken)
+        naverUserService.getUserProfile(accessToken)
 
     suspend fun authenticateWithNaver(
         context: Context,
@@ -49,7 +51,20 @@ class UserDataSource(
         return result
     }
 
-    fun retrieveAccessToken(): String = NaverIdLoginSDK.getAccessToken().orEmpty()
+    fun logoutWithNaver() {
+        NaverIdLoginSDK.logout()
+    }
+
+    suspend fun signOutWithNaver() =
+        retrieveAccessToken()?.let { validAccessToken ->
+            naverLoginService.signOut(
+                BuildConfig.NAVER_LOGIN_CLIENT_ID,
+                BuildConfig.NAVER_LOGIN_CLIENT_SECRET,
+                validAccessToken,
+            )
+        }
+
+    fun retrieveAccessToken(): String? = NaverIdLoginSDK.getAccessToken()
 
     fun retrieveLoginState(): NidOAuthLoginState = NaverIdLoginSDK.getState()
 }
