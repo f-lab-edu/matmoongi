@@ -5,6 +5,7 @@ import android.util.Log
 import com.matmoongi.BuildConfig
 import com.matmoongi.SuccessOrFailure
 import com.matmoongi.network.NaverLoginService
+import com.matmoongi.response.NaverSignOutResponse
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLoginState
 import com.navercorp.nid.oauth.OAuthLoginCallback

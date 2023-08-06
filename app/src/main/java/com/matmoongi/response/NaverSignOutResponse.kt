@@ -1,4 +1,4 @@
-package com.matmoongi.data
+package com.matmoongi.response
 
 @JvmInline
 value class NaverSignOutResponse(

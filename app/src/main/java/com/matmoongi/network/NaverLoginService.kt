@@ -1,6 +1,6 @@
 package com.matmoongi.network
 
-import com.matmoongi.data.NaverSignOutResponse
+import com.matmoongi.response.NaverSignOutResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

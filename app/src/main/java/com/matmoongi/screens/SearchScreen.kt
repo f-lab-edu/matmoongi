@@ -35,7 +35,6 @@ import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
 import com.matmoongi.restaurantCards.RestaurantCard
-import com.matmoongi.restaurantCards.ReviewCard
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -43,6 +42,7 @@ import com.matmoongi.restaurantCards.ReviewCard
 fun SearchScreen(
     searchRestaurantList: List<SearchRestaurant>,
     onClickUserIconButton: () -> Unit,
+    onClickRefreshButton: () -> Unit,
 ) {
     val pagerState = rememberPagerState()
 
@@ -52,7 +52,7 @@ fun SearchScreen(
             .background(color = MaterialTheme.colorScheme.background),
     ) {
         TopBar(onClickUserIconButton)
-        RefreshTextButton()
+        RefreshTextButton(onClickRefreshButton)
         RestaurantCardsList(pagerState, searchRestaurantList)
     }
 }
@@ -79,11 +79,11 @@ private fun TopBar(onClickUserButton: () -> Unit) {
 }
 
 @Composable
-private fun RefreshTextButton() {
+private fun RefreshTextButton(onClickRefreshButton: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(top = 36.dp, start = 16.dp)
-            .clickable(enabled = true) {},
+            .clickable(enabled = true) { onClickRefreshButton() },
     ) {
         Text(
             text = stringResource(R.string.search_in_current_location),
@@ -108,9 +108,11 @@ private fun RestaurantCardsList(
     ) {
         RestaurantCard(searchRestaurant = searchRestaurantList[it])
     }
-    ReviewCard(searchRestaurantList[pagerState.settledPage].review)
+//    TODO("리뷰카드 재설계 필요)
+//    ReviewCard(searchRestaurantList[pagerState.settledPage].review)
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Preview
 @Composable
@@ -118,7 +120,7 @@ private fun SearchScreenPreview(
     @PreviewParameter(SampleRestaurantCardPreview::class)
     searchRestaurantList: List<SearchRestaurant>,
 ) {
-    SearchScreen(searchRestaurantList, onClickUserIconButton = {})
+    SearchScreen(searchRestaurantList, {}, {})
 }
 
 class SampleRestaurantCardPreview : PreviewParameterProvider<List<SearchRestaurant>> {

@@ -25,7 +25,9 @@ import org.greenrobot.eventbus.EventBus
 @ExperimentalMaterial3Api
 class MainActivity : AppCompatActivity() {
 
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels {
+        SearchViewModel.provideFactory(this)
+    }
     private val favoritesViewModel: FavoritesViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels { UserViewModel.Factory }
     private val myPageViewModel: MyPageViewModel by viewModels { MyPageViewModel.Factory }
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity() {
         checkPermission(this)
 
         EventBus.builder().installDefaultEventBus()
+
+        searchViewModel.currentLocationState.observe(this) {
+            searchViewModel.fetchNearbyRestaurantList()
+        }
 
         setContent {
             MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel, myPageViewModel) }

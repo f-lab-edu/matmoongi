@@ -1,14 +1,14 @@
 package com.matmoongi.network
 
-import com.matmoongi.data.UserProfile
+import com.matmoongi.response.UserProfileResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface NaverUserService {
     @GET("nid/me")
-    fun getUserProfile(
+    fun fetchUserProfile(
         @Header("Authorization") accessToken: String,
-    ): UserProfile
+    ): UserProfileResponse
 
     companion object {
         private const val baseUrl = "https://openapi.naver.com/v1/"
