@@ -58,13 +58,11 @@ private fun AppNavHost(
         composable(LOGIN_SCREEN) {
             LoginScreen(
                 navController::goToSearch,
+            ) {
                 userViewModel.onClickNaverLoginButton(
                     context,
-                    userViewModel.oAuthLoginCallback {
-                        navController.goToSearch()
-                    },
-                ),
-            )
+                ) { navController.goToSearch() }
+            }
         }
 
         composable(SEARCH_SCREEN) {

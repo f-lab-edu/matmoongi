@@ -1,11 +1,13 @@
 package com.matmoongi.data
 
 import android.content.Context
-import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.matmoongi.viewmodels.LoginResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class UserRepository(private val userDataSource: UserDataSource) {
-    fun loginWithNaver(context: Context, oAuthLoginCallback: OAuthLoginCallback) =
-        userDataSource.authenticateWithNaver(context, oAuthLoginCallback)
+    suspend fun loginWithNaver(context: Context): LoginResult =
+        userDataSource.authenticateWithNaver(context)
 
     fun retrieveUserLoginState() = userDataSource.retrieveLoginState()
 }
