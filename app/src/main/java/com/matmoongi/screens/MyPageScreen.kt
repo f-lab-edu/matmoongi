@@ -1,5 +1,6 @@
 package com.matmoongi.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,37 +15,65 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.matmoongi.Destination
+import com.matmoongi.MyPageUiState
+import com.matmoongi.MyPageViewEvent
 import com.matmoongi.R
-import com.matmoongi.viewmodels.MyPageItem
+import com.matmoongi.viewmodels.MyPageMenu
 
 @ExperimentalMaterial3Api
 @Composable
 fun MyPageScreen(
-    menuItemList: List<MyPageItem>,
-    onclickBackButton: () -> Unit,
-    onClickMyPageMenuItem: (itemTitle: String) -> Unit,
+    uiState: MyPageUiState,
+    emitEvent: (MyPageViewEvent) -> Unit,
+    onTapMenuItem: (myPageMenu: MyPageMenu) -> Unit,
+    onPressBack: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToLogin: () -> Unit,
+    onNavigateToFavorite: () -> Unit,
+    onNavigateToTerms: () -> Unit,
 ) {
+    val menuList = uiState.menuList
+    val nextRoute = uiState.nextRoute
+    LaunchedEffect(nextRoute) {
+        if (nextRoute != null) {
+            emitEvent(MyPageViewEvent.OnNavigateTo(nextRoute))
+        }
+        when (nextRoute) {
+            Destination.LOGIN_SCREEN -> onNavigateToLogin()
+            Destination.FAVORITE_SCREEN -> onNavigateToFavorite()
+            Destination.TERMS_SCREEN -> onNavigateToTerms()
+            Destination.SEARCH_SCREEN -> onNavigateToSearch()
+            else -> Unit
+        }
+    }
+
+    BackHandler(enabled = true) {
+        onPressBack()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primaryContainer),
     ) {
-        MyPageTopBar(onclickBackButton)
+        MyPageTopBar(onPressBack)
         LazyColumn {
-            items(menuItemList.size) {
+            items(menuList.size) {
                 val backgroundColor = if (it % 2 == 0) {
                     MaterialTheme.colorScheme.background
                 } else {
                     MaterialTheme.colorScheme.primaryContainer
                 }
-                MyPageItemButton(
-                    menuItemTitle = menuItemList[it].name,
+                MenuItem(
+                    myPageMenu = menuList[it],
                     color = backgroundColor,
-                    onClickMyPageMenuItem = onClickMyPageMenuItem,
+                    onClickMenuItem = onTapMenuItem,
                 )
             }
         }
@@ -81,19 +110,19 @@ private fun MyPageTopBar(onclickBackButton: () -> Unit) {
 }
 
 @Composable
-private fun MyPageItemButton(
-    menuItemTitle: String,
+private fun MenuItem(
+    myPageMenu: MyPageMenu,
     color: Color,
-    onClickMyPageMenuItem: (itemTitle: String) -> Unit,
+    onClickMenuItem: (myPageMenu: MyPageMenu) -> Unit,
 ) {
     TextButton(
-        onClick = { onClickMyPageMenuItem(menuItemTitle) },
+        onClick = { onClickMenuItem(myPageMenu) },
         modifier = Modifier
             .fillMaxWidth()
             .background(color),
     ) {
         Text(
-            text = menuItemTitle,
+            text = myPageMenu.name,
             modifier = Modifier.fillMaxSize(),
             style = MaterialTheme.typography.bodyMedium,
         )

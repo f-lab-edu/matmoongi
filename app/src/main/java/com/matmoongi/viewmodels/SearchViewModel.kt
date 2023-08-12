@@ -7,15 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
-import com.navercorp.nid.oauth.NidOAuthLoginState
 import kotlinx.coroutines.flow.StateFlow
 
-enum class MyPageItem {
-    Login, Logout, Favorite, Version, Terms, SignOut
-}
-
 private const val SEARCH_RESTAURANT_STATE = "searchRestaurantList"
-private const val MY_PAGE_ITEM_STATE = "myPageItemList"
 
 class SearchViewModel(
 //    private val favoritesRepository: FavoritesRepository,
@@ -25,11 +19,6 @@ class SearchViewModel(
 
     private val restaurantsState: StateFlow<List<SearchRestaurant>> = state.getStateFlow(
         SEARCH_RESTAURANT_STATE,
-        emptyList(),
-    )
-
-    private val myPageItemState: StateFlow<List<MyPageItem>> = state.getStateFlow(
-        MY_PAGE_ITEM_STATE,
         emptyList(),
     )
 
@@ -60,46 +49,8 @@ class SearchViewModel(
         )
     }
 
-    fun onClickMyPageMenuItem(
-        onClickLoginItem: () -> Unit,
-        onClickLogoutItem: () -> Unit,
-        onClickFavoriteItem: () -> Unit,
-        onClickTermsItem: () -> Unit,
-        onClickSignOutItem: () -> Unit,
-    ): (myPageItem: String) -> Unit = {
-        when (it) {
-            MyPageItem.Login.name -> onClickLoginItem()
-            MyPageItem.Logout.name -> onClickLogoutItem()
-            MyPageItem.Favorite.name -> onClickFavoriteItem()
-            MyPageItem.Terms.name -> onClickTermsItem()
-            MyPageItem.SignOut.name -> onClickSignOutItem()
-            else -> {}
-        }
-    }
-
     @Composable
     fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
-
-    fun refreshMyPageItemList(loginState: NidOAuthLoginState) {
-        if (loginState == NidOAuthLoginState.OK) {
-            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
-                MyPageItem.Logout,
-                MyPageItem.Favorite,
-                MyPageItem.Version,
-                MyPageItem.Terms,
-                MyPageItem.SignOut,
-            )
-        } else {
-            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
-                MyPageItem.Login,
-                MyPageItem.Version,
-                MyPageItem.Terms,
-            )
-        }
-    }
-
-    @Composable
-    fun getMyPageItemList(): List<MyPageItem> = myPageItemState.collectAsState().value
 
 //    /** 주변 음식점을 검색해서 받아오기 - 현재 위치 기반 **/
 //    private suspend fun refreshNearbyRestaurantList() {

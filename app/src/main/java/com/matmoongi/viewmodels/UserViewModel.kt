@@ -49,22 +49,6 @@ class UserViewModel(
         tryToLogin(context, goToSearchScreen)
     }
 
-    fun onClickLogoutButton(goToLoginScreen: () -> Unit): () -> Unit = {
-        logoutStep(goToLoginScreen)
-    }
-
-    fun onClickSignOutButton(goToLoginScreen: () -> Unit): () -> Unit = {
-        viewModelScope.launch {
-            val response =
-                withContext(Dispatchers.IO) { userRepository.signOutWithNaver() }
-            response?.let {
-                if (it.result == "success") {
-                    logoutStep(goToLoginScreen)
-                }
-            }
-        }
-    }
-
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -83,6 +67,7 @@ class UserViewModel(
     /**
      * 로그아웃 -> 로그인 상태 업데이트 -> 로그인 화면으로 이동
      */
+//    TODO(myPageViewModel로 옮겨야함)
     private fun logoutStep(goToLoginScreen: () -> Unit) {
         userRepository.logoutWithNaver()
             .also { refreshUserLoginState() }

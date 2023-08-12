@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import com.matmoongi.theme.MatmoongiTheme
 import com.matmoongi.viewmodels.FavoritesViewModel
+import com.matmoongi.viewmodels.MyPageViewModel
 import com.matmoongi.viewmodels.SearchViewModel
 import com.matmoongi.viewmodels.UserViewModel
 
@@ -26,17 +27,18 @@ class MainActivity : AppCompatActivity() {
     private val searchViewModel: SearchViewModel by viewModels()
     private val favoritesViewModel: FavoritesViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels { UserViewModel.Factory }
+    private val myPageViewModel: MyPageViewModel by viewModels { MyPageViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkPermission(this)
 
         userViewModel.userLoginState.observe(this) {
-            searchViewModel.refreshMyPageItemList(it)
+            myPageViewModel.sendUserLoginState(it)
         }
 
         setContent {
-            MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel) }
+            MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel, myPageViewModel) }
         }
     }
 }

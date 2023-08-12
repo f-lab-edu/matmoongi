@@ -55,7 +55,7 @@ class UserDataSource(
         NaverIdLoginSDK.logout()
     }
 
-    suspend fun signOutWithNaver() =
+    suspend fun signOutWithNaver(): NaverSignOutResponse? =
         retrieveAccessToken()?.let { validAccessToken ->
             naverLoginService.signOut(
                 BuildConfig.NAVER_LOGIN_CLIENT_ID,
