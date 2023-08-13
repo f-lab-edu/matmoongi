@@ -1,23 +1,24 @@
 package com.matmoongi.response
 
+import com.google.gson.annotations.SerializedName
 import com.matmoongi.data.Coordinate
 
 data class NearbyPlacesResponse(
     val results: List<Place>,
-    val next_page_token: String? = null,
+    @SerializedName("next_page_token") val nextPageToken: String? = null,
 )
 
 data class Place(
-    val place_id: String,
+    @SerializedName("place_id") val placeId: String,
     val name: String,
     val photos: List<PlacePhoto>? = null,
     val rating: String,
     val geometry: Geometry,
-    val user_ratings_total: String,
+    @SerializedName("user_ratings_total") val userRatingsTotal: String,
 )
 
 data class PlacePhoto(
-    val photo_reference: String,
+    @SerializedName("photo_reference") val photoReference: String,
     val width: String,
     val height: String,
 )

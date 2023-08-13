@@ -1,7 +1,6 @@
 package com.matmoongi.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.MutableLiveData
@@ -13,8 +12,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.android.gms.location.LocationServices
-import com.matmoongi.BuildConfig
-import com.matmoongi.LocationResultCallback
 import com.matmoongi.data.Coordinate
 import com.matmoongi.data.RestaurantsRemoteDataSource
 import com.matmoongi.data.RestaurantsRepository
@@ -50,16 +47,17 @@ class SearchViewModel(
     }
 
     fun refreshCurrentLocation() {
-        restaurantsRepository.fetchCurrentLatLng(object :
-            LocationResultCallback {
-            override fun onLocationResult(coordinate: Coordinate) {
-                currentLocationState.value = coordinate
-            }
+        viewModelScope.launch {
+            val result: Result<Coordinate> = restaurantsRepository.fetchCurrentLocation()
 
-            override fun onError(error: Exception) {
-                if (BuildConfig.DEBUG) Log.d("Error", error.message.toString())
-            }
-        })
+            result.fold(
+                onSuccess = {
+                    currentLocationState.value =
+                        result.getOrDefault(Coordinate(DEFAULT_LAT, DEFAULT_LNG))
+                },
+                onFailure = { TODO("실패 메세지 스낵바 or 토스트메세지") },
+            )
+        }
     }
 
     @Composable
@@ -77,7 +75,7 @@ class SearchViewModel(
                 }
             state[SEARCH_RESTAURANT_STATE] = restaurants
         }
-    //        즐겨찾기된 음식점 placeId의 Set (isLike 확인을 위해)
+        //        즐겨찾기된 음식점 placeId의 Set (isLike 확인을 위해)
 //        val favoriteRestaurantPlaceIds = withContext(Dispatchers.IO) {
 //            favoritesRepository.getFavoriteRestaurants().map { it.placeId }.toSet()
 //        }
