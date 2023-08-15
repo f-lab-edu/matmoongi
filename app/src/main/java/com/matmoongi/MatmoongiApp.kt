@@ -17,6 +17,7 @@ import com.matmoongi.screens.MyPageScreen
 import com.matmoongi.screens.SearchScreen
 import com.matmoongi.screens.TermsScreen
 import com.matmoongi.viewmodels.SearchViewModel
+import com.matmoongi.viewmodels.UserViewModel
 
 private const val LOGIN_SCREEN = "loginScreen"
 private const val SEARCH_SCREEN = "searchScreen"
@@ -27,7 +28,7 @@ private const val TERMS_SCREEN = "termsScreen"
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun MatmoongiApp(searchViewModel: SearchViewModel) {
+fun MatmoongiApp(userViewModel: UserViewModel, searchViewModel: SearchViewModel) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colorScheme.primary,
@@ -35,6 +36,7 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
     val navController = rememberNavController()
     AppNavHost(
         navController = navController,
+        userViewModel = userViewModel,
         searchViewModel = searchViewModel,
     )
 }
@@ -45,18 +47,22 @@ fun MatmoongiApp(searchViewModel: SearchViewModel) {
 private fun AppNavHost(
     navController: NavHostController,
     searchViewModel: SearchViewModel,
+    userViewModel: UserViewModel,
 ) {
+    val context = LocalContext.current
+
     NavHost(
         navController = navController,
         startDestination = LOGIN_SCREEN,
     ) {
-        val oAuthCallback = searchViewModel.oAuthLoginCallback { navController.goToSearch() }
-
         composable(LOGIN_SCREEN) {
             LoginScreen(
                 navController::goToSearch,
-                searchViewModel.onClickNaverLoginButton(LocalContext.current, oAuthCallback),
-            )
+            ) {
+                userViewModel.onClickNaverLoginButton(
+                    context,
+                ) { navController.goToSearch() }
+            }
         }
 
         composable(SEARCH_SCREEN) {

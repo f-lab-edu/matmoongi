@@ -1,7 +1,5 @@
 package com.matmoongi.viewmodels
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
@@ -9,12 +7,11 @@ import androidx.lifecycle.ViewModel
 import com.matmoongi.R
 import com.matmoongi.data.Review
 import com.matmoongi.data.SearchRestaurant
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.oauth.NidOAuthLoginState
 import kotlinx.coroutines.flow.StateFlow
 
 enum class MyPageItem {
-    LoginLogout, Favorite, Version, Terms, SignOut
+    Login, Logout, Favorite, Version, Terms, SignOut
 }
 
 private const val SEARCH_RESTAURANT_STATE = "searchRestaurantList"
@@ -35,24 +32,6 @@ class SearchViewModel(
         MY_PAGE_ITEM_STATE,
         emptyList(),
     )
-
-    fun oAuthLoginCallback(loginSuccess: () -> Unit): OAuthLoginCallback =
-        object : OAuthLoginCallback {
-            override fun onSuccess() {
-                loginSuccess()
-            }
-
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Log.d("에러", errorCode)
-                Log.d("에러", errorDescription.toString())
-            }
-
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-        }
 
     init {
         // 앱 시작 시 현 위치로 음식점 검색
@@ -79,23 +58,28 @@ class SearchViewModel(
                 review = Review("2", "2", "2", 1.5, "2"),
             ),
         )
-
-        // 임시 마이페이지 아이템 리스트 설정
-        state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(MyPageItem.LoginLogout, MyPageItem.Favorite)
     }
 
     @Composable
     fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
 
-    private fun checkLoginState() {
-        TODO("네아로로 로그인 상태 확인")
+    fun refreshMyPageItemList(loginState: NidOAuthLoginState) {
+        if (loginState == NidOAuthLoginState.OK) {
+            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
+                MyPageItem.Logout,
+                MyPageItem.Favorite,
+                MyPageItem.Version,
+                MyPageItem.Terms,
+                MyPageItem.SignOut,
+            )
+        } else {
+            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
+                MyPageItem.Login,
+                MyPageItem.Version,
+                MyPageItem.Terms,
+            )
+        }
     }
-
-    fun onClickNaverLoginButton(
-        context: Context,
-        oAuthLoginCallback: OAuthLoginCallback,
-    ): () -> Unit =
-        { NaverIdLoginSDK.authenticate(context, oAuthLoginCallback) }
 
     @Composable
     fun getMyPageItemList(): List<MyPageItem> = myPageItemState.collectAsState().value
