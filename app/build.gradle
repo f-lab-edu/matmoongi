@@ -63,7 +63,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -95,9 +94,6 @@ dependencies {
 
     implementation 'com.navercorp.nid:oauth:5.6.0'
 
-<<<<<<< HEAD
     implementation("org.greenrobot:eventbus:3.3.1")
-=======
     implementation "io.coil-kt:coil-compose:2.3.0"
->>>>>>> a061386 (현재 위치에서 주변 음식점 받아오기 구현)
 }
