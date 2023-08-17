@@ -31,8 +31,6 @@ import com.matmoongi.viewmodels.MyPageMenu
 fun MyPageScreen(
     uiState: MyPageUiState,
     emitEvent: (MyPageViewEvent) -> Unit,
-    onTapMenuItem: (myPageMenu: MyPageMenu) -> Unit,
-    onPressBack: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToFavorite: () -> Unit,
@@ -54,7 +52,7 @@ fun MyPageScreen(
     }
 
     BackHandler(enabled = true) {
-        onPressBack()
+        emitEvent(MyPageViewEvent.OnPressBack(Destination.SEARCH_SCREEN))
     }
 
     Column(
@@ -62,7 +60,7 @@ fun MyPageScreen(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primaryContainer),
     ) {
-        MyPageTopBar(onPressBack)
+        MyPageTopBar(emitEvent)
         LazyColumn {
             items(menuList.size) {
                 val backgroundColor = if (it % 2 == 0) {
@@ -73,7 +71,7 @@ fun MyPageScreen(
                 MenuItem(
                     myPageMenu = menuList[it],
                     color = backgroundColor,
-                    onClickMenuItem = onTapMenuItem,
+                    onClickMenuItem = { menu -> emitEvent(MyPageViewEvent.OnTapMenuItem(menu)) },
                 )
             }
         }
@@ -82,7 +80,7 @@ fun MyPageScreen(
 
 @ExperimentalMaterial3Api
 @Composable
-private fun MyPageTopBar(onclickBackButton: () -> Unit) {
+private fun MyPageTopBar(emitEvent: (MyPageViewEvent) -> Unit) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -94,7 +92,7 @@ private fun MyPageTopBar(onclickBackButton: () -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         navigationIcon = {
             IconButton(
-                onClick = onclickBackButton,
+                onClick = { emitEvent(MyPageViewEvent.OnPressBack(Destination.SEARCH_SCREEN)) },
                 content = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_back),

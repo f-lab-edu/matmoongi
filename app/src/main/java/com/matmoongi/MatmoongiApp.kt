@@ -61,7 +61,7 @@ private fun AppNavHost(
 ) {
     val context = LocalContext.current
     // 자동 로그인
-    userViewModel.autoLogin(context, navController::goToSearch)
+    userViewModel.emitEvent(UserViewEvent.OnAutoLogin(context))
 
     NavHost(
         navController = navController,
@@ -69,10 +69,10 @@ private fun AppNavHost(
     ) {
         composable(Destination.LOGIN_SCREEN.destination) {
             LoginScreen(
-                onClickSkipLoginButton = navController::skipToSearch,
-            ) {
-                userViewModel.onClickLoginButton(context, navController::goToSearch)
-            }
+                userViewModel.uiState.collectAsState().value,
+                userViewModel::emitEvent,
+                navController::goToSearch,
+            )
         }
 
         composable(Destination.SEARCH_SCREEN.destination) {
@@ -86,8 +86,6 @@ private fun AppNavHost(
             MyPageScreen(
                 uiState = myPageViewModel.uiState.collectAsState().value,
                 emitEvent = myPageViewModel::emitEvent,
-                onTapMenuItem = myPageViewModel::onTapMenuItem,
-                onPressBack = myPageViewModel::onPressBack,
                 onNavigateToSearch = navController::backToSearch,
                 onNavigateToLogin = navController::goToLogin,
                 onNavigateToFavorite = navController::goToFavorite,
@@ -118,15 +116,8 @@ private fun NavController.goToMyPage() {
     }
 }
 
-private fun NavController.skipToSearch() {
-    navigate(Destination.SEARCH_SCREEN.destination) {
-        launchSingleTop = true
-    }
-}
-
 private fun NavController.goToSearch() {
     navigate(Destination.SEARCH_SCREEN.destination) {
-        // 로그인 후 서치 화면으로 갈때 백스택 초기화
         popBackStack(
             Destination.LOGIN_SCREEN.destination,
             inclusive = true,

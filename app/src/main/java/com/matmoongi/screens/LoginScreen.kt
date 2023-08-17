@@ -13,18 +13,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.matmoongi.Destination
 import com.matmoongi.R
+import com.matmoongi.UserUiState
+import com.matmoongi.UserViewEvent
 
 @Composable
 fun LoginScreen(
-    onClickSkipLoginButton: () -> Unit,
-    onClickNaverLoginButton: () -> Unit,
+    uiState: UserUiState,
+    emitEvent: (UserViewEvent) -> Unit,
+    onNavigateToSearch: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val nextRoute = uiState.nextRoute
+
+    LaunchedEffect(nextRoute) {
+        if (nextRoute != null) {
+            emitEvent(UserViewEvent.OnNavigateTo(nextRoute))
+        }
+        when (nextRoute) {
+            Destination.SEARCH_SCREEN -> onNavigateToSearch()
+            else -> Unit
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,10 +80,12 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 120.dp)
-                .clickable { onClickNaverLoginButton() },
+                .clickable {
+                    emitEvent(UserViewEvent.OnTapLoginButton(context))
+                },
         )
         TextButton(
-            onClick = onClickSkipLoginButton,
+            onClick = { emitEvent(UserViewEvent.OnTapSkipLoginButton(Destination.SEARCH_SCREEN)) },
             modifier = Modifier
                 .padding(top = 12.dp)
                 .wrapContentSize()

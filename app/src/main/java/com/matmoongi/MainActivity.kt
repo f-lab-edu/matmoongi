@@ -19,6 +19,7 @@ import com.matmoongi.viewmodels.FavoritesViewModel
 import com.matmoongi.viewmodels.MyPageViewModel
 import com.matmoongi.viewmodels.SearchViewModel
 import com.matmoongi.viewmodels.UserViewModel
+import org.greenrobot.eventbus.EventBus
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -33,9 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         checkPermission(this)
 
-        userViewModel.userLoginState.observe(this) {
-            myPageViewModel.sendUserLoginState(it)
-        }
+        EventBus.builder().installDefaultEventBus()
 
         setContent {
             MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel, myPageViewModel) }
