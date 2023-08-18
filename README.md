@@ -16,7 +16,7 @@
 
 ## 🚀 이슈들
 
-- https://www.notion.so/doncici/bc8ca7984a584310a6b515bfef304a03?pvs=4
+- https://doncici.notion.site/bc8ca7984a584310a6b515bfef304a03?pvs=4
 
 ## 📚 기술 스택
 - **Jetpack Compose**: Declarative UI framework for building Android UIs in Kotlin.
