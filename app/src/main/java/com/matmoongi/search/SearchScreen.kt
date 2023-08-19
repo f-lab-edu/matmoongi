@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.matmoongi.screens
+package com.matmoongi.search
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -32,8 +32,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.matmoongi.R
-import com.matmoongi.data.Review
-import com.matmoongi.data.SearchRestaurant
+import com.matmoongi.data.dataclass.Review
+import com.matmoongi.data.dataclass.SearchRestaurant
 import com.matmoongi.restaurantCards.RestaurantCard
 
 @ExperimentalFoundationApi

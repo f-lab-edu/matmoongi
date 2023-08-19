@@ -1,5 +1,6 @@
-package com.matmoongi.data
+package com.matmoongi.data.datasource
 
+import com.matmoongi.data.dataclass.Restaurant
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

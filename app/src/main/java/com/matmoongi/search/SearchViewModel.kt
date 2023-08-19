@@ -1,4 +1,4 @@
-package com.matmoongi.viewmodels
+package com.matmoongi.search
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -12,10 +12,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.android.gms.location.LocationServices
-import com.matmoongi.data.Coordinate
-import com.matmoongi.data.RestaurantsRemoteDataSource
-import com.matmoongi.data.RestaurantsRepository
-import com.matmoongi.data.SearchRestaurant
+import com.matmoongi.data.dataclass.Coordinate
+import com.matmoongi.data.dataclass.SearchRestaurant
+import com.matmoongi.data.datasource.RestaurantsRemoteDataSource
+import com.matmoongi.data.repository.RestaurantsRepository
 import com.matmoongi.network.GoogleMapAPIService
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

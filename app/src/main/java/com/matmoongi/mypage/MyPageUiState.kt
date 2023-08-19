@@ -1,6 +1,6 @@
-package com.matmoongi
+package com.matmoongi.mypage
 
-import com.matmoongi.viewmodels.MyPageMenu
+import com.matmoongi.Destination
 
 sealed class MyPageUiState {
     abstract val menuList: List<MyPageMenu>

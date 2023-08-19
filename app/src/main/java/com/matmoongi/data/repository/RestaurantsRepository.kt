@@ -1,8 +1,11 @@
-package com.matmoongi.data
+package com.matmoongi.data.repository
 
 import android.net.Uri
 import com.matmoongi.BuildConfig
 import com.matmoongi.DistanceCalculator
+import com.matmoongi.data.dataclass.Coordinate
+import com.matmoongi.data.dataclass.SearchRestaurant
+import com.matmoongi.data.datasource.RestaurantsRemoteDataSource
 import com.matmoongi.response.Place
 import java.util.Locale
 

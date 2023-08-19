@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.matmoongi.R
 import com.matmoongi.ResponsiveText
-import com.matmoongi.data.SearchRestaurant
+import com.matmoongi.data.dataclass.SearchRestaurant
 import com.matmoongi.theme.PINKY_RED
 
 @Composable

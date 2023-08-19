@@ -1,4 +1,4 @@
-package com.matmoongi.data
+package com.matmoongi.data.datasource
 
 import android.content.Context
 import android.util.Log
@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @ExperimentalCoroutinesApi
-class UserDataSource(
+class LoginDataSource(
     private val naverLoginService: NaverLoginService,
 ) {
     suspend fun authenticateWithNaver(

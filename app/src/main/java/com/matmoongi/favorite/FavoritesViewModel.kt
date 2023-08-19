@@ -1,8 +1,8 @@
-package com.matmoongi.viewmodels
+package com.matmoongi.favorite
 
 import androidx.lifecycle.ViewModel
-import com.matmoongi.data.FavoriteRestaurant
-import com.matmoongi.data.FavoritesRepository
+import com.matmoongi.data.dataclass.FavoriteRestaurant
+import com.matmoongi.data.repository.FavoritesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

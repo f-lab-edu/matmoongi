@@ -1,11 +1,12 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.matmoongi.data
+package com.matmoongi.data.datasource
 
 import android.annotation.SuppressLint
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.matmoongi.BuildConfig
+import com.matmoongi.data.dataclass.Coordinate
 import com.matmoongi.network.GoogleMapAPIService
 import com.matmoongi.response.Place
 import kotlinx.coroutines.ExperimentalCoroutinesApi
