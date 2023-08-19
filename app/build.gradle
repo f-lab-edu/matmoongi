@@ -28,6 +28,8 @@ android {
             buildConfigField "String", "NAVER_LOGIN_CLIENT_SECRET", "\"" + properties["NAVER_LOGIN_CLIENT_SECRET"] + "\""
             buildConfigField "String", "NAVER_LOGIN_CLIENT_NAME", "\"" + properties["NAVER_LOGIN_CLIENT_NAME"] + "\""
             buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"" + properties["GOOGLE_PLACE_API_KEY"] + "\""
+            buildConfigField "String", "NAVER_MAPS_CLIENT_ID", "\"" + properties["NAVER_MAPS_CLIENT_ID"] + "\""
+            manifestPlaceholders = [NAVER_MAPS_CLIENT_ID: properties["NAVER_MAPS_CLIENT_ID"]]
         }
         release {
             minifyEnabled false
@@ -84,6 +86,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling"
     implementation "androidx.compose.ui:ui-tooling-preview"
     implementation "androidx.navigation:navigation-compose:2.6.0"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
@@ -96,4 +99,6 @@ dependencies {
 
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation "io.coil-kt:coil-compose:2.3.0"
+
+    implementation 'com.naver.maps:map-sdk:3.17.0'
 }

@@ -3,6 +3,7 @@ package com.matmoongi.restaurantCards
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -36,15 +37,18 @@ import coil.compose.AsyncImage
 import com.matmoongi.R
 import com.matmoongi.ResponsiveText
 import com.matmoongi.data.dataclass.SearchRestaurant
+import com.matmoongi.search.SearchViewEvent
 import com.matmoongi.theme.PINKY_RED
 
 @Composable
-fun RestaurantCard(searchRestaurant: SearchRestaurant) {
+fun RestaurantCard(searchRestaurant: SearchRestaurant, emitEvent: (SearchViewEvent) -> Unit) {
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxHeight(0.52f)
-            .aspectRatio(1f),
+            .aspectRatio(1f).clickable {
+                emitEvent(SearchViewEvent.OnTapRestaurantCard(searchRestaurant))
+            },
         elevation = CardDefaults.cardElevation(10.dp),
         border = BorderStroke(1.dp, Color.White),
     ) {

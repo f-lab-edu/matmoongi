@@ -1,6 +1,11 @@
 package com.matmoongi.data.dataclass
 
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Coordinate(
-    val lat: Double,
-    val lng: Double,
-)
+    @SerializedName("lat") val latitude: Double,
+    @SerializedName("lng") val longitude: Double,
+) : Parcelable

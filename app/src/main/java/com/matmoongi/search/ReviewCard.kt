@@ -1,4 +1,4 @@
-package com.matmoongi.restaurantCards
+package com.matmoongi.search
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

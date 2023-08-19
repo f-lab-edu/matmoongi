@@ -20,8 +20,8 @@ class RestaurantsRepository(
     suspend fun fetchNearbyRestaurant(coordinate: Coordinate): List<SearchRestaurant> {
         val location = LATITUDE_LONGITUDE_PARAMETER_FORMAT.format(
             Locale.ROOT,
-            coordinate.lat,
-            coordinate.lng,
+            coordinate.latitude,
+            coordinate.longitude,
         )
 
         val placeList = restaurantsRemoteDataSource.fetchNearbyRestaurants(location)
@@ -40,11 +40,12 @@ class RestaurantsRepository(
             thumbnailPhoto = imageUrl,
             rating = place.rating,
             ratingCount = place.userRatingsTotal,
+            coordinate = place.geometry.location,
             distance = DistanceCalculator.calculateDistance(
-                coordinate.lat,
-                coordinate.lng,
-                place.geometry.location.lat,
-                place.geometry.location.lng,
+                coordinate.latitude,
+                coordinate.longitude,
+                place.geometry.location.latitude,
+                place.geometry.location.longitude,
             ),
         )
     }
