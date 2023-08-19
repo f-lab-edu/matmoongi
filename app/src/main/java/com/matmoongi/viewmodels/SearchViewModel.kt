@@ -17,13 +17,11 @@ import com.matmoongi.data.RestaurantsRemoteDataSource
 import com.matmoongi.data.RestaurantsRepository
 import com.matmoongi.data.SearchRestaurant
 import com.matmoongi.network.GoogleMapAPIService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-private const val DEFAULT_LAT: Double = 37.5666103
-private const val DEFAULT_LNG: Double = 126.9783882
+private const val DEFAULT_LATITUDE: Double = 37.5666103
+private const val DEFAULT_LONGITUDE: Double = 126.9783882
 private const val SEARCH_RESTAURANT_STATE = "searchRestaurantList"
 
 class SearchViewModel(
@@ -38,7 +36,7 @@ class SearchViewModel(
     )
 
     val currentLocationState: MutableLiveData<Coordinate> = MutableLiveData<Coordinate>(
-        Coordinate(DEFAULT_LAT, DEFAULT_LNG),
+        Coordinate(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
     )
 
     init {
@@ -53,7 +51,7 @@ class SearchViewModel(
             result.fold(
                 onSuccess = {
                     currentLocationState.value =
-                        result.getOrDefault(Coordinate(DEFAULT_LAT, DEFAULT_LNG))
+                        result.getOrDefault(Coordinate(DEFAULT_LATITUDE, DEFAULT_LONGITUDE))
                 },
                 onFailure = { TODO("실패 메세지 스낵바 or 토스트메세지") },
             )
@@ -66,13 +64,11 @@ class SearchViewModel(
     fun fetchNearbyRestaurantList() {
         this.viewModelScope.launch {
             val restaurants =
-                withContext(Dispatchers.IO) {
-                    currentLocationState.value?.let { coordinate ->
-                        restaurantsRepository.fetchNearbyRestaurant(
-                            coordinate,
-                        )
-                    }.orEmpty()
-                }
+                currentLocationState.value?.let { coordinate ->
+                    restaurantsRepository.fetchNearbyRestaurant(
+                        coordinate,
+                    )
+                }.orEmpty()
             state[SEARCH_RESTAURANT_STATE] = restaurants
         }
         //        즐겨찾기된 음식점 placeId의 Set (isLike 확인을 위해)
@@ -131,7 +127,6 @@ class SearchViewModel(
                         RestaurantsRemoteDataSource(
                             GoogleMapAPIService.getService(),
                             LocationServices.getFusedLocationProviderClient(context),
-                            Dispatchers.IO,
                         ),
                     ),
                     createSavedStateHandle(),
