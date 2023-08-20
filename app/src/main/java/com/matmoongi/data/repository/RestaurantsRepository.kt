@@ -24,7 +24,9 @@ class RestaurantsRepository(
             coordinate.lng,
         )
 
-        return restaurantsRemoteDataSource.fetchNearbyRestaurants(location).map { place ->
+        val placeList = restaurantsRemoteDataSource.fetchNearbyRestaurants(location)
+
+        return placeList.map { place ->
             placeToSearchRestaurant(place, coordinate)
         }
     }

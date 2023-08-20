@@ -78,9 +78,10 @@ private fun AppNavHost(
 
         composable(Destination.SEARCH_SCREEN.destination) {
             SearchScreen(
-                searchViewModel.getSearchRestaurantList(),
-                navController::goToMyPage,
-            ) { searchViewModel.refreshCurrentLocation() }
+                uiState = searchViewModel.uiState.collectAsState().value,
+                emitEvent = searchViewModel::emitEvent,
+                onNavigateToMyPage = navController::goToMyPage,
+            )
         }
 
         composable(Destination.MY_PAGE_SCREEN.destination) {
