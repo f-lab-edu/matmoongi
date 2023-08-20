@@ -1,25 +1,34 @@
 package com.matmoongi.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.matmoongi.R
-import com.matmoongi.data.Review
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.android.gms.location.LocationServices
+import com.matmoongi.data.Coordinate
+import com.matmoongi.data.RestaurantsRemoteDataSource
+import com.matmoongi.data.RestaurantsRepository
 import com.matmoongi.data.SearchRestaurant
-import com.navercorp.nid.oauth.NidOAuthLoginState
+import com.matmoongi.network.GoogleMapAPIService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-enum class MyPageItem {
-    Login, Logout, Favorite, Version, Terms, SignOut
-}
-
+private const val DEFAULT_LAT: Double = 37.5666103
+private const val DEFAULT_LNG: Double = 126.9783882
 private const val SEARCH_RESTAURANT_STATE = "searchRestaurantList"
-private const val MY_PAGE_ITEM_STATE = "myPageItemList"
 
 class SearchViewModel(
 //    private val favoritesRepository: FavoritesRepository,
-//    private val restaurantsRepository: RestaurantsRepository,
+    private val restaurantsRepository: RestaurantsRepository,
     private val state: SavedStateHandle,
 ) : ViewModel() {
 
@@ -28,77 +37,53 @@ class SearchViewModel(
         emptyList(),
     )
 
-    private val myPageItemState: StateFlow<List<MyPageItem>> = state.getStateFlow(
-        MY_PAGE_ITEM_STATE,
-        emptyList(),
+    val currentLocationState: MutableLiveData<Coordinate> = MutableLiveData<Coordinate>(
+        Coordinate(DEFAULT_LAT, DEFAULT_LNG),
     )
 
     init {
         // 앱 시작 시 현 위치로 음식점 검색
-//        viewModelScope.launch { refreshNearbyRestaurantList() }
-        state[SEARCH_RESTAURANT_STATE] = listOf<SearchRestaurant>(
-            SearchRestaurant(
-                "123",
-                "크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거크라이치즈버거",
-                R.drawable.example.toString(),
-                "4.0",
-                "123",
-                "123",
-                false,
-                review = Review("1226", "1", "1", 4.7, "1"),
-            ),
-            SearchRestaurant(
-                "123",
-                "크라이치즈버거",
-                R.drawable.example.toString(),
-                "4.0",
-                "123",
-                "123",
-                false,
-                review = Review("2", "2", "2", 1.5, "2"),
-            ),
-        )
+//        viewModelScope.launch { fetchNearbyRestaurantList() }
     }
 
-    @Composable
-    fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
+    fun refreshCurrentLocation() {
+        viewModelScope.launch {
+            val result: Result<Coordinate> = restaurantsRepository.fetchCurrentLocation()
 
-    fun refreshMyPageItemList(loginState: NidOAuthLoginState) {
-        if (loginState == NidOAuthLoginState.OK) {
-            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
-                MyPageItem.Logout,
-                MyPageItem.Favorite,
-                MyPageItem.Version,
-                MyPageItem.Terms,
-                MyPageItem.SignOut,
-            )
-        } else {
-            state[MY_PAGE_ITEM_STATE] = listOf<MyPageItem>(
-                MyPageItem.Login,
-                MyPageItem.Version,
-                MyPageItem.Terms,
+            result.fold(
+                onSuccess = {
+                    currentLocationState.value =
+                        result.getOrDefault(Coordinate(DEFAULT_LAT, DEFAULT_LNG))
+                },
+                onFailure = { TODO("실패 메세지 스낵바 or 토스트메세지") },
             )
         }
     }
 
     @Composable
-    fun getMyPageItemList(): List<MyPageItem> = myPageItemState.collectAsState().value
+    fun getSearchRestaurantList(): List<SearchRestaurant> = restaurantsState.collectAsState().value
 
-//    /** 주변 음식점을 검색해서 받아오기 - 현재 위치 기반 **/
-//    private suspend fun refreshNearbyRestaurantList() {
-//        val restaurants =
-//            withContext(Dispatchers.IO) {
-//                restaurantsRepository.getNearbyRestaurants()
-//            }
-// //        즐겨찾기된 음식점 placeId의 Set (isLike 확인을 위해)
+    fun fetchNearbyRestaurantList() {
+        this.viewModelScope.launch {
+            val restaurants =
+                withContext(Dispatchers.IO) {
+                    currentLocationState.value?.let { coordinate ->
+                        restaurantsRepository.fetchNearbyRestaurant(
+                            coordinate,
+                        )
+                    }.orEmpty()
+                }
+            state[SEARCH_RESTAURANT_STATE] = restaurants
+        }
+        //        즐겨찾기된 음식점 placeId의 Set (isLike 확인을 위해)
 //        val favoriteRestaurantPlaceIds = withContext(Dispatchers.IO) {
 //            favoritesRepository.getFavoriteRestaurants().map { it.placeId }.toSet()
 //        }
-//        state[FEED_RESTAURANTS_LIST] = restaurants.map {
+//        state[SEARCH_RESTAURANT_STATE] = restaurants.map {
 //            it.toSearchRestaurant(favoriteRestaurantPlaceIds.contains(it.placeId))
 //        }
-//    }
-//
+    }
+
 //    private suspend fun getMoreNearbyRestaurantList() {
 //        val currentRestaurants: List<SearchRestaurant> = state.get<List<SearchRestaurant>>(
 //            FEED_RESTAURANTS_LIST,
@@ -137,4 +122,21 @@ class SearchViewModel(
 //    private fun unregisterInFavorites() {
 //        favoritesRepository.unregister()
 //    }
+
+    companion object {
+        fun provideFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SearchViewModel(
+                    RestaurantsRepository(
+                        RestaurantsRemoteDataSource(
+                            GoogleMapAPIService.getService(),
+                            LocationServices.getFusedLocationProviderClient(context),
+                            Dispatchers.IO,
+                        ),
+                    ),
+                    createSavedStateHandle(),
+                )
+            }
+        }
+    }
 }

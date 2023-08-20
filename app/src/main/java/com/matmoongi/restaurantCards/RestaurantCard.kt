@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.matmoongi.R
 import com.matmoongi.ResponsiveText
 import com.matmoongi.data.SearchRestaurant
@@ -62,14 +63,25 @@ private fun ColumnScope.ImageArea(searchRestaurant: SearchRestaurant) {
             .fillMaxWidth()
             .fillMaxHeight(),
     ) {
-        Image(
-            painter = painterResource(
-                id = searchRestaurant.thumbnailPhoto.toIntOrNull() ?: R.drawable.example,
-            ),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit,
-        )
+        if (
+            searchRestaurant.thumbnailPhoto.isNullOrEmpty()
+        ) {
+            Image(
+                painter = painterResource(
+                    id = R.drawable.example,
+                ),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit,
+            )
+        } else {
+            AsyncImage(
+                model = searchRestaurant.thumbnailPhoto,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+        }
         FavoriteButton()
     }
 }
@@ -119,6 +131,7 @@ private fun RowScope.RestaurantCardTextContent(searchRestaurant: SearchRestauran
             text = stringResource(R.string.distance).format(searchRestaurant.distance),
             modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.bodySmall,
+            maxLines = 1,
         )
     }
     Column(

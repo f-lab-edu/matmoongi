@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -16,19 +17,26 @@ import com.matmoongi.screens.LoginScreen
 import com.matmoongi.screens.MyPageScreen
 import com.matmoongi.screens.SearchScreen
 import com.matmoongi.screens.TermsScreen
+import com.matmoongi.viewmodels.MyPageViewModel
 import com.matmoongi.viewmodels.SearchViewModel
 import com.matmoongi.viewmodels.UserViewModel
 
-private const val LOGIN_SCREEN = "loginScreen"
-private const val SEARCH_SCREEN = "searchScreen"
-private const val MY_PAGE_SCREEN = "myPageScreen"
-private const val FAVORITE_SCREEN = "favoriteScreen"
-private const val TERMS_SCREEN = "termsScreen"
+enum class Destination(val destination: String) {
+    LOGIN_SCREEN("LoginScreen"),
+    SEARCH_SCREEN("SearchScreen"),
+    MY_PAGE_SCREEN("MyPageScreen"),
+    FAVORITE_SCREEN("FavoriteScreen"),
+    TERMS_SCREEN("TermsScreen"),
+}
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun MatmoongiApp(userViewModel: UserViewModel, searchViewModel: SearchViewModel) {
+fun MatmoongiApp(
+    userViewModel: UserViewModel,
+    searchViewModel: SearchViewModel,
+    myPageViewModel: MyPageViewModel,
+) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colorScheme.primary,
@@ -38,6 +46,7 @@ fun MatmoongiApp(userViewModel: UserViewModel, searchViewModel: SearchViewModel)
         navController = navController,
         userViewModel = userViewModel,
         searchViewModel = searchViewModel,
+        myPageViewModel = myPageViewModel,
     )
 }
 
@@ -48,59 +57,96 @@ private fun AppNavHost(
     navController: NavHostController,
     searchViewModel: SearchViewModel,
     userViewModel: UserViewModel,
+    myPageViewModel: MyPageViewModel,
 ) {
     val context = LocalContext.current
+    // 자동 로그인
+    userViewModel.emitEvent(UserViewEvent.OnAutoLogin(context))
 
     NavHost(
         navController = navController,
-        startDestination = LOGIN_SCREEN,
+        startDestination = Destination.LOGIN_SCREEN.destination,
     ) {
-        composable(LOGIN_SCREEN) {
+        composable(Destination.LOGIN_SCREEN.destination) {
             LoginScreen(
+                userViewModel.uiState.collectAsState().value,
+                userViewModel::emitEvent,
                 navController::goToSearch,
-            ) {
-                userViewModel.onClickNaverLoginButton(
-                    context,
-                ) { navController.goToSearch() }
-            }
-        }
-
-        composable(SEARCH_SCREEN) {
-            SearchScreen(
-                searchViewModel.getSearchRestaurantList(),
-                navController::goToMyPage,
             )
         }
 
-        composable(MY_PAGE_SCREEN) {
-            MyPageScreen(navController::backToSearch, searchViewModel.getMyPageItemList())
+        composable(Destination.SEARCH_SCREEN.destination) {
+            SearchScreen(
+                searchViewModel.getSearchRestaurantList(),
+                navController::goToMyPage,
+            ) { searchViewModel.refreshCurrentLocation() }
         }
 
-        composable(FAVORITE_SCREEN) {
+        composable(Destination.MY_PAGE_SCREEN.destination) {
+            MyPageScreen(
+                uiState = myPageViewModel.uiState.collectAsState().value,
+                emitEvent = myPageViewModel::emitEvent,
+                onNavigateToSearch = navController::backToSearch,
+                onNavigateToLogin = navController::goToLogin,
+                onNavigateToFavorite = navController::goToFavorite,
+                onNavigateToTerms = navController::goToTerms,
+            )
+        }
+
+        composable(Destination.FAVORITE_SCREEN.destination) {
             FavoriteScreen()
         }
 
-        composable(TERMS_SCREEN) {
+        composable(Destination.TERMS_SCREEN.destination) {
             TermsScreen()
         }
     }
 }
 
 private fun NavController.backToSearch() {
-    navigate(SEARCH_SCREEN) {
+    navigate(Destination.SEARCH_SCREEN.destination) {
         popBackStack()
         launchSingleTop = true
     }
 }
 
 private fun NavController.goToMyPage() {
-    navigate(MY_PAGE_SCREEN) {
+    navigate(Destination.MY_PAGE_SCREEN.destination) {
         launchSingleTop = true
     }
 }
 
 private fun NavController.goToSearch() {
-    navigate(SEARCH_SCREEN) {
+    navigate(Destination.SEARCH_SCREEN.destination) {
+        popBackStack(
+            Destination.LOGIN_SCREEN.destination,
+            inclusive = true,
+            saveState = false,
+        )
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToLogin() {
+    navigate(Destination.LOGIN_SCREEN.destination) {
+        // 로그인 화면으로 갈때는 백스택 초기화
+        popBackStack(
+            Destination.SEARCH_SCREEN.destination,
+            inclusive = true,
+            saveState = false,
+        )
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToFavorite() {
+    navigate(Destination.FAVORITE_SCREEN.destination) {
+        launchSingleTop = true
+    }
+}
+
+private fun NavController.goToTerms() {
+    navigate(Destination.FAVORITE_SCREEN.destination) {
         launchSingleTop = true
     }
 }
