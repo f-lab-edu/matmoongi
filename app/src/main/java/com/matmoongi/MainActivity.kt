@@ -14,7 +14,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
-import com.matmoongi.favorite.FavoritesViewModel
 import com.matmoongi.login.LoginViewModel
 import com.matmoongi.mypage.MyPageViewModel
 import com.matmoongi.search.SearchViewModel
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private val searchViewModel: SearchViewModel by viewModels {
         SearchViewModel.provideFactory(this)
     }
-    private val favoritesViewModel: FavoritesViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels { LoginViewModel.Factory }
     private val myPageViewModel: MyPageViewModel by viewModels { MyPageViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,10 +35,6 @@ class MainActivity : AppCompatActivity() {
         checkPermission(this)
 
         EventBus.builder().installDefaultEventBus()
-
-        searchViewModel.currentLocationState.observe(this) {
-            searchViewModel.fetchNearbyRestaurantList()
-        }
 
         setContent {
             MatmoongiTheme { MatmoongiApp(loginViewModel, searchViewModel, myPageViewModel) }
