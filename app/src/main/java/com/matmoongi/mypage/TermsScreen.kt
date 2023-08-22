@@ -1,4 +1,4 @@
-package com.matmoongi.screens
+package com.matmoongi.mypage
 
 import androidx.compose.runtime.Composable
 

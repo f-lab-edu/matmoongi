@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.matmoongi.viewmodels
+package com.matmoongi.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,11 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.matmoongi.Destination
-import com.matmoongi.LoginEvent
-import com.matmoongi.MyPageUiState
-import com.matmoongi.MyPageViewEvent
-import com.matmoongi.data.UserDataSource
-import com.matmoongi.data.UserRepository
+import com.matmoongi.data.datasource.LoginDataSource
+import com.matmoongi.data.repository.LoginRepository
+import com.matmoongi.login.LoginEvent
 import com.matmoongi.network.NaverLoginService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -30,7 +28,7 @@ enum class MyPageMenu {
 }
 
 class MyPageViewModel(
-    private val userRepository: UserRepository,
+    private val loginRepository: LoginRepository,
 ) : ViewModel() {
 
     val uiState: StateFlow<MyPageUiState>
@@ -133,7 +131,7 @@ class MyPageViewModel(
     private fun onTapLogoutItem() {
         when (_uiState.value) {
             is MyPageUiState.LoggedIn -> {
-                userRepository.logoutWithNaver().fold(
+                loginRepository.logoutWithNaver().fold(
                     onSuccess = {
                         _uiState.value = MyPageUiState.LoggedOut(
                             nextRoute = Destination.LOGIN_SCREEN,
@@ -168,7 +166,7 @@ class MyPageViewModel(
 
     private suspend fun onTapSignOutItem() {
         when (_uiState.value) {
-            is MyPageUiState.LoggedIn -> userRepository.signOutWithNaver().fold(
+            is MyPageUiState.LoggedIn -> loginRepository.signOutWithNaver().fold(
                 onSuccess = {
                     _uiState.value = MyPageUiState.LoggedOut(nextRoute = Destination.LOGIN_SCREEN)
                 },
@@ -197,8 +195,8 @@ class MyPageViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 MyPageViewModel(
-                    userRepository = UserRepository(
-                        userDataSource = UserDataSource(
+                    loginRepository = LoginRepository(
+                        loginDataSource = LoginDataSource(
                             NaverLoginService.getService(),
                         ),
                     ),

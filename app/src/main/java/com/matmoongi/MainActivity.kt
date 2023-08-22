@@ -14,11 +14,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
+import com.matmoongi.favorite.FavoritesViewModel
+import com.matmoongi.login.LoginViewModel
+import com.matmoongi.mypage.MyPageViewModel
+import com.matmoongi.search.SearchViewModel
 import com.matmoongi.theme.MatmoongiTheme
-import com.matmoongi.viewmodels.FavoritesViewModel
-import com.matmoongi.viewmodels.MyPageViewModel
-import com.matmoongi.viewmodels.SearchViewModel
-import com.matmoongi.viewmodels.UserViewModel
 import org.greenrobot.eventbus.EventBus
 
 @ExperimentalFoundationApi
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         SearchViewModel.provideFactory(this)
     }
     private val favoritesViewModel: FavoritesViewModel by viewModels()
-    private val userViewModel: UserViewModel by viewModels { UserViewModel.Factory }
+    private val loginViewModel: LoginViewModel by viewModels { LoginViewModel.Factory }
     private val myPageViewModel: MyPageViewModel by viewModels { MyPageViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            MatmoongiTheme { MatmoongiApp(userViewModel, searchViewModel, myPageViewModel) }
+            MatmoongiTheme { MatmoongiApp(loginViewModel, searchViewModel, myPageViewModel) }
         }
     }
 }

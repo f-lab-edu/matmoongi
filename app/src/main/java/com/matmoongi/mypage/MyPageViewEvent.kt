@@ -1,6 +1,7 @@
-package com.matmoongi
+package com.matmoongi.mypage
 
-import com.matmoongi.viewmodels.MyPageMenu
+import com.matmoongi.Destination
+import com.matmoongi.login.LoginStatus
 
 sealed class MyPageViewEvent {
     data class OnLogin(val loginStatus: LoginStatus) : MyPageViewEvent()

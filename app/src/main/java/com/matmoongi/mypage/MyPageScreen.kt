@@ -1,4 +1,4 @@
-package com.matmoongi.screens
+package com.matmoongi.mypage
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -21,10 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.matmoongi.Destination
-import com.matmoongi.MyPageUiState
-import com.matmoongi.MyPageViewEvent
 import com.matmoongi.R
-import com.matmoongi.viewmodels.MyPageMenu
 
 @ExperimentalMaterial3Api
 @Composable

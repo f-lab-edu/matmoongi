@@ -1,6 +1,8 @@
-package com.matmoongi
+package com.matmoongi.login
 
-sealed class UserUiState {
+import com.matmoongi.Destination
+
+sealed class LoginUiState {
     abstract val userId: String?
     abstract val loginStatus: LoginStatus
     abstract val nextRoute: Destination?
@@ -9,13 +11,13 @@ sealed class UserUiState {
         override val userId: String? = null,
         override val loginStatus: LoginStatus = LoginStatus.LoggedIn,
         override val nextRoute: Destination? = null,
-    ) : UserUiState()
+    ) : LoginUiState()
 
     data class LoggedOut(
         override val userId: String? = null,
         override val loginStatus: LoginStatus = LoginStatus.LoggedOut,
         override val nextRoute: Destination? = null,
-    ) : UserUiState()
+    ) : LoginUiState()
 }
 
 enum class LoginStatus {

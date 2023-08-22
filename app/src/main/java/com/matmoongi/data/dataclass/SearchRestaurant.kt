@@ -1,4 +1,4 @@
-package com.matmoongi.data
+package com.matmoongi.data.dataclass
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

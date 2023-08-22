@@ -1,4 +1,4 @@
-package com.matmoongi
+package com.matmoongi.login
 
 sealed class LoginEvent {
     data class Login(val loginStatus: LoginStatus) : LoginEvent()

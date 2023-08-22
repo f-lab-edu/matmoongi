@@ -1,4 +1,4 @@
-package com.matmoongi.screens
+package com.matmoongi.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,13 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.matmoongi.Destination
 import com.matmoongi.R
-import com.matmoongi.UserUiState
-import com.matmoongi.UserViewEvent
 
 @Composable
 fun LoginScreen(
-    uiState: UserUiState,
-    emitEvent: (UserViewEvent) -> Unit,
+    uiState: LoginUiState,
+    emitEvent: (LoginViewEvent) -> Unit,
     onNavigateToSearch: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -36,7 +34,7 @@ fun LoginScreen(
 
     LaunchedEffect(nextRoute) {
         if (nextRoute != null) {
-            emitEvent(UserViewEvent.OnNavigateTo(nextRoute))
+            emitEvent(LoginViewEvent.OnNavigateTo(nextRoute))
         }
         when (nextRoute) {
             Destination.SEARCH_SCREEN -> onNavigateToSearch()
@@ -81,11 +79,11 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(top = 120.dp)
                 .clickable {
-                    emitEvent(UserViewEvent.OnTapLoginButton(context))
+                    emitEvent(LoginViewEvent.OnTapLoginButton(context))
                 },
         )
         TextButton(
-            onClick = { emitEvent(UserViewEvent.OnTapSkipLoginButton(Destination.SEARCH_SCREEN)) },
+            onClick = { emitEvent(LoginViewEvent.OnTapSkipLoginButton(Destination.SEARCH_SCREEN)) },
             modifier = Modifier
                 .padding(top = 12.dp)
                 .wrapContentSize()

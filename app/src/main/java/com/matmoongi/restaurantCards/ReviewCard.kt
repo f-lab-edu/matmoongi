@@ -27,7 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.matmoongi.R
-import com.matmoongi.data.Review
+import com.matmoongi.data.dataclass.Review
 
 @Composable
 fun ReviewCard(review: Review) {

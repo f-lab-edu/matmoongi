@@ -1,4 +1,7 @@
-package com.matmoongi.data
+package com.matmoongi.data.repository
+
+import com.matmoongi.data.dataclass.Restaurant
+import com.matmoongi.data.datasource.FavoritesRemoteDataSource
 
 /** firebase realtimeDB와 즐겨찾기 리스트 동기화 **/
 class FavoritesRepository(

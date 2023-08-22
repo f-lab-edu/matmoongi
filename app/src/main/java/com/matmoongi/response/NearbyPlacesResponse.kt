@@ -1,7 +1,7 @@
 package com.matmoongi.response
 
 import com.google.gson.annotations.SerializedName
-import com.matmoongi.data.Coordinate
+import com.matmoongi.data.dataclass.Coordinate
 
 data class NearbyPlacesResponse(
     val results: List<Place>,

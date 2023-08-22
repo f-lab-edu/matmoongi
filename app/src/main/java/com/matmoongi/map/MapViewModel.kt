@@ -1,7 +1,7 @@
-package com.matmoongi.viewmodels
+package com.matmoongi.map
 
 import androidx.lifecycle.ViewModel
-import com.matmoongi.data.FavoritesRepository
+import com.matmoongi.data.repository.FavoritesRepository
 
 class MapViewModel(
     private val favoritesRepository: FavoritesRepository,

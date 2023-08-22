@@ -12,14 +12,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.matmoongi.screens.FavoriteScreen
-import com.matmoongi.screens.LoginScreen
-import com.matmoongi.screens.MyPageScreen
-import com.matmoongi.screens.SearchScreen
-import com.matmoongi.screens.TermsScreen
-import com.matmoongi.viewmodels.MyPageViewModel
-import com.matmoongi.viewmodels.SearchViewModel
-import com.matmoongi.viewmodels.UserViewModel
+import com.matmoongi.favorite.FavoriteScreen
+import com.matmoongi.login.LoginScreen
+import com.matmoongi.login.LoginViewEvent
+import com.matmoongi.login.LoginViewModel
+import com.matmoongi.mypage.MyPageScreen
+import com.matmoongi.mypage.MyPageViewModel
+import com.matmoongi.mypage.TermsScreen
+import com.matmoongi.search.SearchScreen
+import com.matmoongi.search.SearchViewModel
 
 enum class Destination(val destination: String) {
     LOGIN_SCREEN("LoginScreen"),
@@ -33,7 +34,7 @@ enum class Destination(val destination: String) {
 @ExperimentalMaterial3Api
 @Composable
 fun MatmoongiApp(
-    userViewModel: UserViewModel,
+    loginViewModel: LoginViewModel,
     searchViewModel: SearchViewModel,
     myPageViewModel: MyPageViewModel,
 ) {
@@ -44,7 +45,7 @@ fun MatmoongiApp(
     val navController = rememberNavController()
     AppNavHost(
         navController = navController,
-        userViewModel = userViewModel,
+        loginViewModel = loginViewModel,
         searchViewModel = searchViewModel,
         myPageViewModel = myPageViewModel,
     )
@@ -56,12 +57,12 @@ fun MatmoongiApp(
 private fun AppNavHost(
     navController: NavHostController,
     searchViewModel: SearchViewModel,
-    userViewModel: UserViewModel,
+    loginViewModel: LoginViewModel,
     myPageViewModel: MyPageViewModel,
 ) {
     val context = LocalContext.current
     // 자동 로그인
-    userViewModel.emitEvent(UserViewEvent.OnAutoLogin(context))
+    loginViewModel.emitEvent(LoginViewEvent.OnAutoLogin(context))
 
     NavHost(
         navController = navController,
@@ -69,8 +70,8 @@ private fun AppNavHost(
     ) {
         composable(Destination.LOGIN_SCREEN.destination) {
             LoginScreen(
-                userViewModel.uiState.collectAsState().value,
-                userViewModel::emitEvent,
+                loginViewModel.uiState.collectAsState().value,
+                loginViewModel::emitEvent,
                 navController::goToSearch,
             )
         }
