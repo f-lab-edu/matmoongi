@@ -54,7 +54,7 @@ private val matmoongiTypography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.nanum_barun_gothic_bold)),
-        fontSize = 24.sp,
+        fontSize = 20.sp,
         color = Color.Black,
         platformStyle = PlatformTextStyle(includeFontPadding = false),
     ),

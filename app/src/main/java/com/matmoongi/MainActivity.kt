@@ -37,7 +37,13 @@ class MainActivity : AppCompatActivity() {
         EventBus.builder().installDefaultEventBus()
 
         setContent {
-            MatmoongiTheme { MatmoongiApp(loginViewModel, searchViewModel, myPageViewModel) }
+            MatmoongiTheme {
+                MatmoongiApp(
+                    loginViewModel,
+                    searchViewModel,
+                    myPageViewModel,
+                )
+            }
         }
     }
 }

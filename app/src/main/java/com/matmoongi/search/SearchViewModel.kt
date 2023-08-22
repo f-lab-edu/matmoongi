@@ -9,6 +9,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.android.gms.location.LocationServices
 import com.matmoongi.Destination
 import com.matmoongi.data.dataclass.Coordinate
+import com.matmoongi.data.dataclass.MapRestaurant
+import com.matmoongi.data.dataclass.SearchRestaurant
 import com.matmoongi.data.datasource.RestaurantsRemoteDataSource
 import com.matmoongi.data.repository.RestaurantsRepository
 import com.matmoongi.network.GoogleMapAPIService
@@ -30,8 +32,8 @@ class SearchViewModel(
         get() = _uiState.asStateFlow()
 
     private val _uiState = MutableStateFlow<SearchUiState>(
-        SearchUiState.UserLocation(
-            currentLocation = Coordinate(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
+        SearchUiState.Default(
+            userLocation = Coordinate(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
         ),
     )
 
@@ -60,6 +62,7 @@ class SearchViewModel(
     private fun onReceiveEvent(event: SearchViewEvent) {
         when (event) {
             is SearchViewEvent.OnTapRefreshUserLocationButton -> onRefreshUserLocation()
+            is SearchViewEvent.OnTapRestaurantCard -> onTapRestaurantCard(event.searchRestaurant)
             is SearchViewEvent.OnUserLocationChanged -> onUserLocationChanged()
             is SearchViewEvent.OnTapUserIcon -> onTapUserIcon()
             is SearchViewEvent.OnNavigateTo -> onNavigateTo(event.destination)
@@ -72,16 +75,40 @@ class SearchViewModel(
             val result: Result<Coordinate> = restaurantsRepository.fetchCurrentLocation()
 
             when (currentState) {
-                is SearchUiState.UserLocation -> {
+                is SearchUiState.Default -> {
                     result.fold(
                         onSuccess = { coordinate ->
-                            _uiState.value = currentState.copy(currentLocation = coordinate)
+                            _uiState.value = currentState.copy(userLocation = coordinate)
                         },
                         onFailure = { TODO("실패 메세지 스낵바 or 토스트메세지") },
                     )
                 }
             }
         }
+    }
+
+    private fun onTapRestaurantCard(searchRestaurant: SearchRestaurant) {
+        when (val currentState = _uiState.value) {
+            is SearchUiState.Default -> {
+                _uiState.value = currentState.copy(
+                    restaurant = searchRestaurant,
+                    mapRestaurant = toMapRestaurant(searchRestaurant),
+                    nextRoute = Destination.MAP_SCREEN,
+                )
+            }
+        }
+    }
+
+    private fun toMapRestaurant(searchRestaurant: SearchRestaurant): MapRestaurant {
+        return MapRestaurant(
+            placeId = searchRestaurant.placeId,
+            name = searchRestaurant.name,
+            photos = null,
+            rating = searchRestaurant.rating,
+            ratingCount = searchRestaurant.ratingCount,
+            coordinate = searchRestaurant.coordinate,
+            isLike = searchRestaurant.isLike,
+        )
     }
 
     private fun onUserLocationChanged() {
@@ -91,8 +118,8 @@ class SearchViewModel(
     private fun onFetchNearbyRestaurants() {
         viewModelScope.launch {
             when (val currentState = _uiState.value) {
-                is SearchUiState.UserLocation -> {
-                    val coordinate = currentState.currentLocation
+                is SearchUiState.Default -> {
+                    val coordinate = currentState.userLocation
                     val restaurantList = restaurantsRepository.fetchNearbyRestaurant(coordinate)
                     _uiState.value = currentState.copy(restaurantList = restaurantList)
                 }
@@ -102,7 +129,7 @@ class SearchViewModel(
 
     private fun onTapUserIcon() {
         when (val currentState = _uiState.value) {
-            is SearchUiState.UserLocation -> {
+            is SearchUiState.Default -> {
                 _uiState.value = currentState.copy(nextRoute = Destination.MY_PAGE_SCREEN)
             }
         }
@@ -110,7 +137,7 @@ class SearchViewModel(
 
     private fun onNavigateTo(destination: Destination) {
         when (val currentState = _uiState.value) {
-            is SearchUiState.UserLocation -> {
+            is SearchUiState.Default -> {
                 if (currentState.nextRoute == destination) {
                     _uiState.value = currentState.copy(nextRoute = null)
                 }

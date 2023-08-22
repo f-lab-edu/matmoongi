@@ -28,14 +28,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.matmoongi.Destination
 import com.matmoongi.R
-import com.matmoongi.data.dataclass.Review
+import com.matmoongi.data.dataclass.Coordinate
+import com.matmoongi.data.dataclass.MapRestaurant
 import com.matmoongi.data.dataclass.SearchRestaurant
 import com.matmoongi.restaurantCards.RestaurantCard
 
@@ -46,11 +43,11 @@ fun SearchScreen(
     uiState: SearchUiState,
     emitEvent: (SearchViewEvent) -> Unit,
     onNavigateToMyPage: () -> Unit,
+    onNavigateToMap: (MapRestaurant, Coordinate) -> Unit,
 ) {
     val pagerState = rememberPagerState()
     val nextRoute = uiState.nextRoute
-    val userLocation = uiState.currentLocation
-    viewModel<SearchViewModel>()
+    val userLocation = uiState.userLocation
 
     LaunchedEffect(userLocation) {
         emitEvent(SearchViewEvent.OnUserLocationChanged)
@@ -63,6 +60,9 @@ fun SearchScreen(
 
         when (nextRoute) {
             Destination.MY_PAGE_SCREEN -> onNavigateToMyPage()
+            Destination.MAP_SCREEN -> uiState.mapRestaurant?.let { restaurant ->
+                onNavigateToMap(restaurant, uiState.userLocation)
+            }
             else -> Unit
         }
     }
@@ -74,7 +74,7 @@ fun SearchScreen(
     ) {
         TopBar(emitEvent)
         RefreshTextButton(emitEvent)
-        RestaurantCardsList(pagerState, uiState.restaurantList)
+        RestaurantCardsList(pagerState, uiState.restaurantList, emitEvent)
     }
 }
 
@@ -120,6 +120,7 @@ private fun RefreshTextButton(onClickRefreshButton: (SearchViewEvent) -> Unit) {
 private fun RestaurantCardsList(
     pagerState: PagerState,
     searchRestaurantList: List<SearchRestaurant>,
+    emitEvent: (SearchViewEvent) -> Unit,
 ) {
     HorizontalPager(
         pageCount = searchRestaurantList.size,
@@ -129,36 +130,8 @@ private fun RestaurantCardsList(
         state = pagerState,
         contentPadding = PaddingValues(8.dp),
     ) {
-        RestaurantCard(searchRestaurant = searchRestaurantList[it])
+        RestaurantCard(searchRestaurant = searchRestaurantList[it], emitEvent)
     }
 //    TODO("리뷰카드 재설계 필요)
 //    ReviewCard(searchRestaurantList[pagerState.settledPage].review)
-}
-
-@ExperimentalFoundationApi
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-private fun SearchScreenPreview(
-    @PreviewParameter(SampleRestaurantCardPreview::class)
-    searchUiState: SearchUiState,
-) {
-    SearchScreen(searchUiState, {}, {})
-}
-
-class SampleRestaurantCardPreview : PreviewParameterProvider<List<SearchRestaurant>> {
-    override val values: Sequence<List<SearchRestaurant>> = sequenceOf(
-        listOf(
-            SearchRestaurant(
-                "123",
-                "크라이치즈버거크라이치즈버거크라이치즈버거",
-                R.drawable.example.toString(),
-                "4.0",
-                "123",
-                "123",
-                false,
-                review = Review("123", "123", "123", 1.5, "123"),
-            ),
-        ),
-    )
 }

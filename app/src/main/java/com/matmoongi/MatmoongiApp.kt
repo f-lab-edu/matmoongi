@@ -8,14 +8,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.gson.Gson
+import com.matmoongi.data.dataclass.Coordinate
+import com.matmoongi.data.dataclass.MapRestaurant
 import com.matmoongi.favorite.FavoriteScreen
 import com.matmoongi.login.LoginScreen
 import com.matmoongi.login.LoginViewEvent
 import com.matmoongi.login.LoginViewModel
+import com.matmoongi.map.MapScreen
 import com.matmoongi.mypage.MyPageScreen
 import com.matmoongi.mypage.MyPageViewModel
 import com.matmoongi.mypage.TermsScreen
@@ -28,6 +34,7 @@ enum class Destination(val destination: String) {
     MY_PAGE_SCREEN("MyPageScreen"),
     FAVORITE_SCREEN("FavoriteScreen"),
     TERMS_SCREEN("TermsScreen"),
+    MAP_SCREEN("MapScreen"),
 }
 
 @ExperimentalFoundationApi
@@ -81,6 +88,7 @@ private fun AppNavHost(
                 uiState = searchViewModel.uiState.collectAsState().value,
                 emitEvent = searchViewModel::emitEvent,
                 onNavigateToMyPage = navController::goToMyPage,
+                onNavigateToMap = navController::goToMap,
             )
         }
 
@@ -92,6 +100,27 @@ private fun AppNavHost(
                 onNavigateToLogin = navController::goToLogin,
                 onNavigateToFavorite = navController::goToFavorite,
                 onNavigateToTerms = navController::goToTerms,
+            )
+        }
+
+        composable(
+            route = Destination.MAP_SCREEN.destination + "/{restaurant}/{userLocation}",
+            arguments = listOf(
+                navArgument("restaurant") { NavType.StringType },
+                navArgument("userLocation") { NavType.StringType },
+            ),
+        ) { backStackEntry ->
+            val restaurant = Gson().fromJson(
+                backStackEntry.arguments?.getString("restaurant"),
+                MapRestaurant::class.java,
+            )
+            val userLocation = Gson().fromJson(
+                backStackEntry.arguments?.getString("userLocation"),
+                Coordinate::class.java,
+            )
+            MapScreen(
+                restaurant = restaurant,
+                userLocation = userLocation,
             )
         }
 
@@ -127,6 +156,12 @@ private fun NavController.goToSearch() {
         )
         launchSingleTop = true
     }
+}
+
+private fun NavController.goToMap(restaurant: MapRestaurant, userLocation: Coordinate) {
+    val restaurantJson = Gson().toJson(restaurant)
+    val userLocationJson = Gson().toJson(userLocation)
+    navigate(Destination.MAP_SCREEN.destination + "/$restaurantJson/$userLocationJson")
 }
 
 private fun NavController.goToLogin() {
