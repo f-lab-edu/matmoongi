@@ -7,7 +7,7 @@ import com.matmoongi.data.dataclass.Coordinate
 import com.matmoongi.data.dataclass.SearchRestaurant
 import com.matmoongi.data.datasource.RestaurantsRemoteDataSource
 import com.matmoongi.response.Place
-import java.util.Locale
+import java.util.*
 
 private const val LATITUDE_LONGITUDE_PARAMETER_FORMAT = "%.7f,%.7f"
 
@@ -26,9 +26,9 @@ class RestaurantsRepository(
 
         val placeList = restaurantsRemoteDataSource.fetchNearbyRestaurants(location)
 
-        return placeList.map { place ->
-            placeToSearchRestaurant(place, coordinate)
-        }
+        return placeList
+            .filter { place -> place.rating.toDouble() >= 3.5 && place.photos != null }
+            .map { place -> placeToSearchRestaurant(place, coordinate) }
     }
 
     private fun placeToSearchRestaurant(place: Place, coordinate: Coordinate): SearchRestaurant {
@@ -63,8 +63,8 @@ class RestaurantsRepository(
     /** google placePhoto 사진 요청 url <br>
      * @see <a href="https://developers.google.com/maps/documentation/places/web-service/photos?hl=ko#place_photo_example">구글 PlacePhoto 요청 예시</a>
      * @param photoReference 사진 요청을 실행할 때 사진을 식별하는 데 사용되는 문자열
-     * @param maxWidth 1이상 1600이하의 Int
-     * @param maxHeight 1이상 1600이하의 Int
+     * @param maxWidth 1이상 1600이하의 String
+     * @param maxHeight 1이상 1600이하의 String
      * @param googleApiKey Google API Key 문자열
      * */
     private fun getPhotoRequestUrl(
@@ -74,12 +74,11 @@ class RestaurantsRepository(
         googleApiKey: String,
     ): String {
         val builder = Uri.parse("https://maps.googleapis.com/").buildUpon()
-        builder.appendPath("maps/api/place/photo")
-            .appendQueryParameter("photoReference", photoReference)
-            .appendQueryParameter("maxWidth", maxWidth)
-            .appendQueryParameter("maxHeight", maxHeight)
-            .appendQueryParameter("googleApiKey", googleApiKey)
-
+        builder.path("maps/api/place/photo")
+            .appendQueryParameter("maxwidth", maxWidth)
+            .appendQueryParameter("maxheight", maxHeight)
+            .appendQueryParameter("photo_reference", photoReference)
+            .appendQueryParameter("key", googleApiKey)
         return builder.build().toString()
     }
 }
